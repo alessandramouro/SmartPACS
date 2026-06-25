@@ -71,6 +71,16 @@ services:
       start_period: 30s
     networks:
       - dicomcloud-net
+      - traefik_proxy
+    labels:
+      traefik.enable: 'true'
+      traefik.docker.network: traefik_proxy
+      traefik.http.routers.dicomcloud-api.rule: Host(`smartpacs.com.br`, `www.smartpacs.com.br`) && (PathPrefix(`/api`) || PathPrefix(`/socket.io`) || PathPrefix(`/docs`) || PathPrefix(`/health`))
+      traefik.http.routers.dicomcloud-api.entrypoints: websecure
+      traefik.http.routers.dicomcloud-api.tls: 'true'
+      traefik.http.routers.dicomcloud-api.tls.certresolver: letsencrypt
+      traefik.http.routers.dicomcloud-api.priority: '10'
+      traefik.http.services.dicomcloud-api.loadbalancer.server.port: '3001'
     deploy:
       resources:
         limits:
@@ -100,31 +110,25 @@ services:
       - api
     networks:
       - dicomcloud-net
-
-  nginx:
-    image: nginx:1.25-alpine
-    container_name: dicomcloud-nginx
-    restart: always
-    volumes:
-      - ./infrastructure/docker/nginx/nginx.prod.conf:/etc/nginx/nginx.conf:ro
-      - ./infrastructure/docker/nginx/ssl:/etc/nginx/ssl:ro
-      - nginx_cache:/var/cache/nginx
-    ports:
-      - '80:80'
-      - '443:443'
-    depends_on:
-      - api
-      - web
-    networks:
-      - dicomcloud-net
+      - traefik_proxy
+    labels:
+      traefik.enable: 'true'
+      traefik.docker.network: traefik_proxy
+      traefik.http.routers.dicomcloud-web.rule: Host(`smartpacs.com.br`, `www.smartpacs.com.br`)
+      traefik.http.routers.dicomcloud-web.entrypoints: websecure
+      traefik.http.routers.dicomcloud-web.tls: 'true'
+      traefik.http.routers.dicomcloud-web.tls.certresolver: letsencrypt
+      traefik.http.routers.dicomcloud-web.priority: '1'
+      traefik.http.services.dicomcloud-web.loadbalancer.server.port: '3000'
 
 networks:
   dicomcloud-net:
     driver: bridge
+  traefik_proxy:
+    external: true
 
 volumes:
   postgres_data:
   redis_data:
   api_storage:
   api_logs:
-  nginx_cache:
