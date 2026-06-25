@@ -37,6 +37,10 @@ jobs:
       - name: Build shared packages
         run: npx turbo run build --filter=@dicomcloud/types
 
+      - name: Generate Prisma client
+        working-directory: apps/api
+        run: npx prisma generate
+
       - name: Lint
         run: npx turbo run lint
 
