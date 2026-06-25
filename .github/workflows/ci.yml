@@ -150,6 +150,9 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
     needs: [lint-typecheck, test-api]
+    permissions:
+      contents: read
+      packages: write
     steps:
       - uses: actions/checkout@v4
 
