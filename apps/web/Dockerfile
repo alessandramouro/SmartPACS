@@ -19,8 +19,9 @@ EXPOSE 3000
 CMD ["npm", "run", "dev"]
 
 # ─── Builder ──────────────────────────────────────────────────
+# No NODE_ENV=production here — npm omits devDependencies when it's set, but
+# typescript (via packages/types) is a devDependency needed to build.
 FROM base AS builder
-ENV NODE_ENV=production
 # NEXT_PUBLIC_* vars are inlined into the client bundle at build time,
 # so they must arrive as build ARGs, not just container-runtime env vars.
 ARG NEXT_PUBLIC_API_URL
