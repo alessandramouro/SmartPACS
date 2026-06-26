@@ -158,7 +158,8 @@ services:
     container_name: smartpacs-landing
     restart: always
     volumes:
-      - ./apps/landing:/usr/share/nginx/html:ro
+      # Switch back to ./apps/landing/site once the full landing page is ready to publish.
+      - ./apps/landing/coming-soon:/usr/share/nginx/html:ro
     networks:
       - smartpacs-net
     labels:
