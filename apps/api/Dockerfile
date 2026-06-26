@@ -59,7 +59,7 @@ USER nestjs
 
 EXPOSE 3001
 HEALTHCHECK --interval=30s --timeout=10s --start-period=30s \
-  CMD curl -f http://localhost:3001/health || exit 1
+  CMD curl -f http://localhost:3001/api/v1/health || exit 1
 
 ENTRYPOINT ["dumb-init", "--"]
 CMD ["node", "dist/src/main"]
