@@ -1,5 +1,5 @@
 {
-  "name": "@dicomcloud/web",
+  "name": "@smartpacs/web",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -10,7 +10,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@dicomcloud/types": "*",
+    "@smartpacs/types": "*",
     "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-alert-dialog": "^1.1.3",
     "@radix-ui/react-avatar": "^1.1.1",

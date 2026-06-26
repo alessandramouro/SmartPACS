@@ -5,7 +5,7 @@
 # =============================================================================
 
 Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor Cyan
-Write-Host "  DicomCloud — Instalando extensões VS Code" -ForegroundColor Cyan
+Write-Host "  SmartPACS — Instalando extensões VS Code" -ForegroundColor Cyan
 Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor Cyan
 
 $extensions = @(

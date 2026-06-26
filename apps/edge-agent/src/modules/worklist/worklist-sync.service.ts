@@ -41,7 +41,7 @@ export class WorklistSyncService implements OnModuleInit, OnModuleDestroy {
     private readonly cloudApiService: CloudApiService,
   ) {
     this.worklistDir = path.resolve(this.configService.get<string>('dicom.worklist.dir', './storage/worklist'));
-    this.aeDir = path.join(this.worklistDir, this.configService.get<string>('dicom.aeTitle', 'DICOMCLOUD'));
+    this.aeDir = path.join(this.worklistDir, this.configService.get<string>('dicom.aeTitle', 'SMARTPACS'));
     this.intervalMs = this.configService.get<number>('dicom.worklist.cacheMinutes', 5) * 60 * 1000;
     this.localEnabled = this.configService.get<boolean>('dicom.worklist.enabled', false);
     this.localHisUrl = this.configService.get<string>('dicom.worklist.hisUrl', '');
@@ -78,7 +78,7 @@ export class WorklistSyncService implements OnModuleInit, OnModuleDestroy {
   }
 
   private getOurAeTitle(): string {
-    return this.cloudConfig?.aeTitle || this.configService.get<string>('dicom.aeTitle', 'DICOMCLOUD');
+    return this.cloudConfig?.aeTitle || this.configService.get<string>('dicom.aeTitle', 'SMARTPACS');
   }
 
   async syncFromHis(): Promise<void> {

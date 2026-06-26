@@ -1,5 +1,5 @@
 ; ===========================================================================
-; DicomCloud Edge Agent — Inno Setup Installer Script
+; SmartPACS Edge Agent — Inno Setup Installer Script
 ; ===========================================================================
 ; Versao: 1.0.0
 ; Requer: Inno Setup 6.x  https://jrsoftware.org/isinfo.php
@@ -19,12 +19,12 @@
 ; Esses arquivos sao gerados pelo script build-installer.ps1
 ; ===========================================================================
 
-#define AppName       "DicomCloud Edge Agent"
+#define AppName       "SmartPACS Edge Agent"
 #define AppVersion    "1.0.0"
-#define AppPublisher  "DicomCloud"
-#define AppURL        "https://dicomcloud.com.br"
-#define AppSvcName    "DicomCloudAgent"
-#define AppMutex      "DicomCloudEdgeAgentInstaller"
+#define AppPublisher  "SmartPACS"
+#define AppURL        "https://smartpacs.com.br"
+#define AppSvcName    "SmartPACSAgent"
+#define AppMutex      "SmartPACSEdgeAgentInstaller"
 
 [Setup]
 AppId                    = {{A3B7C2D1-E4F5-4A6B-8C9D-0E1F2A3B4C5D}
@@ -34,12 +34,12 @@ AppPublisher             = {#AppPublisher}
 AppPublisherURL          = {#AppURL}
 AppSupportURL            = {#AppURL}
 AppUpdatesURL            = {#AppURL}
-DefaultDirName           = {autopf}\DicomCloud\EdgeAgent
-DefaultGroupName         = DicomCloud
+DefaultDirName           = {autopf}\SmartPACS\EdgeAgent
+DefaultGroupName         = SmartPACS
 AllowNoIcons             = yes
 LicenseFile              =
 OutputDir                = output
-OutputBaseFilename       = DicomCloudEdgeAgent-Setup-{#AppVersion}
+OutputBaseFilename       = SmartPACSEdgeAgent-Setup-{#AppVersion}
 SetupIconFile            =
 Compression              = lzma2/ultra64
 SolidCompression         = yes
@@ -53,7 +53,7 @@ UninstallDisplayName     = {#AppName} {#AppVersion}
 CreateUninstallRegKey    = yes
 VersionInfoVersion       = {#AppVersion}
 VersionInfoCompany       = {#AppPublisher}
-VersionInfoDescription   = DicomCloud Edge Agent Installer
+VersionInfoDescription   = SmartPACS Edge Agent Installer
 MinVersion               = 10.0
 CloseApplications        = yes
 CloseApplicationsFilter  = node.exe
@@ -62,16 +62,16 @@ CloseApplicationsFilter  = node.exe
 Name: "portuguese"; MessagesFile: "compiler:Languages\Portuguese.isl"
 
 [CustomMessages]
-portuguese.WelcomeLabel2=Este assistente ira instalar o [name/ver] em seu computador.%n%nO Edge Agent recebe estudos DICOM de equipamentos de imagem e sincroniza automaticamente com o servidor DicomCloud.%n%nPRE-REQUISITO: registre este agente no portal DicomCloud (Agentes Edge -> Registrar Agente) antes de continuar.%n%nClique em Proximo para continuar.
-portuguese.PageCloudTitle=Conexao com o Servidor DicomCloud
-portuguese.PageCloudSubtitle=Informe o endereco do servidor central DicomCloud
+portuguese.WelcomeLabel2=Este assistente ira instalar o [name/ver] em seu computador.%n%nO Edge Agent recebe estudos DICOM de equipamentos de imagem e sincroniza automaticamente com o servidor SmartPACS.%n%nPRE-REQUISITO: registre este agente no portal SmartPACS (Agentes Edge -> Registrar Agente) antes de continuar.%n%nClique em Proximo para continuar.
+portuguese.PageCloudTitle=Conexao com o Servidor SmartPACS
+portuguese.PageCloudSubtitle=Informe o endereco do servidor central SmartPACS
 portuguese.PageCredsTitle=Credenciais do Agente
-portuguese.PageCredsSubtitle=Insira as credenciais obtidas no portal DicomCloud apos registrar este agente
+portuguese.PageCredsSubtitle=Insira as credenciais obtidas no portal SmartPACS apos registrar este agente
 portuguese.PageDicomTitle=Configuracao DICOM
 portuguese.PageDicomSubtitle=Configure o receptor DICOM para aceitar conexoes dos equipamentos de imagem
 portuguese.PageSvcTitle=Servico Windows
 portuguese.PageSvcSubtitle=Configure como o agente sera executado em segundo plano
-portuguese.LblCloudUrl=URL da API DicomCloud:
+portuguese.LblCloudUrl=URL da API SmartPACS:
 portuguese.LblAgentId=Agent ID:
 portuguese.LblApiKey=API Key:
 portuguese.LblClinicId=Clinic ID (opcional):
@@ -112,9 +112,9 @@ Source: "bundle\tools\dcmtk\*";   DestDir: "{app}\dcmtk";         Flags: ignorev
 Source: "bundle\tools\nssm\nssm.exe"; DestDir: "{app}\nssm";      Flags: ignoreversion
 
 [Icons]
-Name: "{group}\DicomCloud Edge Agent - Logs";     Filename: "{app}\storage\logs"
-Name: "{group}\Desinstalar DicomCloud Edge Agent"; Filename: "{uninstallexe}"
-Name: "{commondesktop}\DicomCloud Agent - Logs";   Filename: "{app}\storage\logs"; Tasks: desktopicon
+Name: "{group}\SmartPACS Edge Agent - Logs";     Filename: "{app}\storage\logs"
+Name: "{group}\Desinstalar SmartPACS Edge Agent"; Filename: "{uninstallexe}"
+Name: "{commondesktop}\SmartPACS Agent - Logs";   Filename: "{app}\storage\logs"; Tasks: desktopicon
 
 [Tasks]
 Name: "desktopicon"; Description: "Criar atalho na area de trabalho"; GroupDescription: "Atalhos:"; Flags: unchecked
@@ -124,11 +124,11 @@ Filename: "{sys}\WindowsPowerShell\v1.0\powershell.exe"; \
     Parameters: "-NoProfile -ExecutionPolicy Bypass -File ""{app}\installer-postinstall.ps1"""; \
     Flags: runhidden waituntilterminated; \
     StatusMsg: "Configurando e iniciando o servico..."; \
-    Description: "Configurar e iniciar o servico DicomCloud"
+    Description: "Configurar e iniciar o servico SmartPACS"
 
 [UninstallRun]
 Filename: "{sys}\WindowsPowerShell\v1.0\powershell.exe"; \
-    Parameters: "-NoProfile -ExecutionPolicy Bypass -Command ""& '{app}\nssm\nssm.exe' stop {#AppSvcName}; Start-Sleep 3; & '{app}\nssm\nssm.exe' remove {#AppSvcName} confirm; Remove-NetFirewallRule -DisplayName 'DicomCloud Edge Agent - DICOM SCP' -ErrorAction SilentlyContinue"""; \
+    Parameters: "-NoProfile -ExecutionPolicy Bypass -Command ""& '{app}\nssm\nssm.exe' stop {#AppSvcName}; Start-Sleep 3; & '{app}\nssm\nssm.exe' remove {#AppSvcName} confirm; Remove-NetFirewallRule -DisplayName 'SmartPACS Edge Agent - DICOM SCP' -ErrorAction SilentlyContinue"""; \
     Flags: runhidden waituntilterminated
 
 ; ===========================================================================
@@ -154,7 +154,7 @@ begin
   PageCloud := CreateInputQueryPage(wpSelectDir,
     CustomMessage('PageCloudTitle'),
     CustomMessage('PageCloudSubtitle'),
-    'Informe a URL completa do servidor DicomCloud ao qual este agente vai se conectar.');
+    'Informe a URL completa do servidor SmartPACS ao qual este agente vai se conectar.');
   PageCloud.Add(CustomMessage('LblCloudUrl'), False);
   PageCloud.Values[0] := 'http://localhost:3001';
 
@@ -162,7 +162,7 @@ begin
   PageCreds := CreateInputQueryPage(PageCloud.ID,
     CustomMessage('PageCredsTitle'),
     CustomMessage('PageCredsSubtitle'),
-    'Acesse o portal DicomCloud, va em Agentes Edge > Registrar Agente, e copie os dados abaixo.');
+    'Acesse o portal SmartPACS, va em Agentes Edge > Registrar Agente, e copie os dados abaixo.');
   PageCreds.Add(CustomMessage('LblAgentId'),  False);
   PageCreds.Add(CustomMessage('LblApiKey'),   True);
   PageCreds.Add(CustomMessage('LblClinicId'), False);
@@ -174,7 +174,7 @@ begin
     'O AE Title e a identidade DICOM deste agente. Configure o mesmo valor no equipamento de imagem.');
   PageDicom.Add(CustomMessage('LblAeTitle'),   False);
   PageDicom.Add(CustomMessage('LblDicomPort'), False);
-  PageDicom.Values[0] := 'DICOMCLOUD';
+  PageDicom.Values[0] := 'SMARTPACS';
   PageDicom.Values[1] := '104';
 
   // ── Pagina 4: Servico Windows ────────────────────────────────────────────
@@ -183,7 +183,7 @@ begin
     CustomMessage('PageSvcSubtitle'),
     '');
   PageSvc.Add(CustomMessage('LblSvcName'), False);
-  PageSvc.Values[0] := 'DicomCloudAgent';
+  PageSvc.Values[0] := 'SmartPACSAgent';
 
   // Checkbox "instalar como servico automatico"
   ChkInstallSvc               := TNewCheckBox.Create(PageSvc);
@@ -246,7 +246,7 @@ begin
 
     lines := TStringList.Create;
     try
-      lines.Add('# Gerado pelo instalador DicomCloud Edge Agent');
+      lines.Add('# Gerado pelo instalador SmartPACS Edge Agent');
       lines.Add('$InstallDir   = "' + ExpandConstant('{app}') + '"');
       lines.Add('$AgentId      = "' + Trim(PageCreds.Values[0]) + '"');
       lines.Add('$ApiKey       = "' + Trim(PageCreds.Values[1]) + '"');
@@ -263,7 +263,7 @@ begin
 
       // Criar .env
       lines.Add('$envContent = @"');
-      lines.Add('# DicomCloud Edge Agent — gerado em ' + GetDateTimeString('yyyy-mm-dd hh:nn:ss', '-', ':'));
+      lines.Add('# SmartPACS Edge Agent — gerado em ' + GetDateTimeString('yyyy-mm-dd hh:nn:ss', '-', ':'));
       lines.Add('EDGE_AGENT_ID=$AgentId');
       lines.Add('EDGE_AGENT_CLINIC_ID=$ClinicId');
       lines.Add('EDGE_AGENT_API_KEY=$ApiKey');
@@ -295,8 +295,8 @@ begin
       lines.Add('');
 
       // Regra de firewall
-      lines.Add('Remove-NetFirewallRule -DisplayName "DicomCloud Edge Agent - DICOM SCP" -ErrorAction SilentlyContinue');
-      lines.Add('New-NetFirewallRule -DisplayName "DicomCloud Edge Agent - DICOM SCP" `');
+      lines.Add('Remove-NetFirewallRule -DisplayName "SmartPACS Edge Agent - DICOM SCP" -ErrorAction SilentlyContinue');
+      lines.Add('New-NetFirewallRule -DisplayName "SmartPACS Edge Agent - DICOM SCP" `');
       lines.Add('    -Direction Inbound -Protocol TCP -LocalPort $DicomPort -Action Allow | Out-Null');
       lines.Add('');
 
@@ -313,8 +313,8 @@ begin
       lines.Add('    & $NssmExe set        $ServiceName AppRotateOnline   1 | Out-Null');
       lines.Add('    & $NssmExe set        $ServiceName AppRotateBytes    10485760 | Out-Null');
       lines.Add('    & $NssmExe set        $ServiceName Start             SERVICE_AUTO_START | Out-Null');
-      lines.Add('    & $NssmExe set        $ServiceName DisplayName       "DicomCloud Edge Agent" | Out-Null');
-      lines.Add('    & $NssmExe set        $ServiceName Description       "Receptor DICOM e agente de sincronizacao DicomCloud" | Out-Null');
+      lines.Add('    & $NssmExe set        $ServiceName DisplayName       "SmartPACS Edge Agent" | Out-Null');
+      lines.Add('    & $NssmExe set        $ServiceName Description       "Receptor DICOM e agente de sincronizacao SmartPACS" | Out-Null');
       lines.Add('    & $NssmExe set        $ServiceName ObjectName        LocalSystem | Out-Null');
       lines.Add('    & $NssmExe start      $ServiceName | Out-Null');
       lines.Add('}');
@@ -334,9 +334,9 @@ function PrepareToInstall(var NeedsRestart: Boolean): String;
 var
   svcName : String;
 begin
-  svcName := 'DicomCloudAgent';
+  svcName := 'SmartPACSAgent';
   if CheckForMutexes('{#AppMutex}') then begin
-    Result := 'Outra instalacao do DicomCloud Edge Agent esta em andamento.';
+    Result := 'Outra instalacao do SmartPACS Edge Agent esta em andamento.';
     Exit;
   end;
   // Parar servico existente se houver

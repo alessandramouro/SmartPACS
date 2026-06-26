@@ -1,6 +1,6 @@
 'use client';
 
-import type { PaginatedResponse } from '@dicomcloud/types';
+import type { PaginatedResponse } from '@smartpacs/types';
 import { useQuery } from '@tanstack/react-query';
 import { FileText, Search, RefreshCw, ChevronLeft, ChevronRight, CheckCircle, XCircle, FileSpreadsheet } from 'lucide-react';
 import { useState } from 'react';

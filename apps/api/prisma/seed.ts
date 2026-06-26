@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('🌱 Seeding DicomCloud database...');
+  console.log('🌱 Seeding SmartPACS database...');
 
   // ─── Super Tenant (Platform) ────────────────────────────────
   const superTenant = await prisma.tenant.upsert({
@@ -13,7 +13,7 @@ async function main() {
     update: {},
     create: {
       id: '00000000-0000-0000-0000-000000000002',
-      name: 'DicomCloud Platform',
+      name: 'SmartPACS Platform',
       slug: 'platform',
       status: TenantStatus.ACTIVE,
       plan: TenantPlan.ENTERPRISE,
@@ -44,7 +44,7 @@ async function main() {
   console.log('✅ Super tenant created:', superTenant.slug);
 
   // ─── Super Admin User ────────────────────────────────────────
-  const adminEmail = process.env.SEED_ADMIN_EMAIL ?? 'admin@dicomcloud.com';
+  const adminEmail = process.env.SEED_ADMIN_EMAIL ?? 'admin@smartpacs.com';
   const adminPassword = process.env.SEED_ADMIN_PASSWORD ?? 'Admin@123456!';
   const passwordHash = await argon2.hash(adminPassword, {
     type: argon2.argon2id,
@@ -235,9 +235,9 @@ async function main() {
       dicomPort: 104,
       dicomConfig: {
         allowedCallingAeTitles: ['ULTRASOUND_GE', 'ULTRASOUND_PHILIPS'],
-        receiveDirectory: 'C:\\DicomCloud\\received',
-        processedDirectory: 'C:\\DicomCloud\\processed',
-        failedDirectory: 'C:\\DicomCloud\\failed',
+        receiveDirectory: 'C:\\SmartPACS\\received',
+        processedDirectory: 'C:\\SmartPACS\\processed',
+        failedDirectory: 'C:\\SmartPACS\\failed',
       },
       remoteConfig: {
         syncIntervalSeconds: 30,
@@ -266,7 +266,7 @@ async function main() {
       isActive: false, // Needs OAuth
       config: {
         type: 'GOOGLE_DRIVE',
-        folderPath: '/DicomCloud/CentroImagem',
+        folderPath: '/SmartPACS/CentroImagem',
       },
     },
   });

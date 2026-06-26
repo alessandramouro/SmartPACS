@@ -1,34 +1,34 @@
 <#
 .SYNOPSIS
-    DicomCloud Edge Agent -- Instalador Windows
+    SmartPACS Edge Agent -- Instalador Windows
 
 .DESCRIPTION
-    Instala e configura o DicomCloud Edge Agent como servico Windows.
+    Instala e configura o SmartPACS Edge Agent como servico Windows.
     Modo interativo (assistente) ou silencioso (automacao/MDM).
 
 .PARAMETER InstallDir
-    Diretorio de instalacao. Padrao: C:\DicomCloud\EdgeAgent
+    Diretorio de instalacao. Padrao: C:\SmartPACS\EdgeAgent
 
 .PARAMETER AgentId
-    ID do agente obtido no portal DicomCloud apos registrar o agente.
+    ID do agente obtido no portal SmartPACS apos registrar o agente.
 
 .PARAMETER ApiKey
-    API Key obtida no portal DicomCloud (exibida uma unica vez).
+    API Key obtida no portal SmartPACS (exibida uma unica vez).
 
 .PARAMETER ClinicId
     ID da clinica associada (para referencia no .env).
 
 .PARAMETER CloudApiUrl
-    URL do servidor DicomCloud. Padrao: http://localhost:3001
+    URL do servidor SmartPACS. Padrao: http://localhost:3001
 
 .PARAMETER AeTitle
-    AE Title DICOM (max 16 chars). Padrao: DICOMCLOUD
+    AE Title DICOM (max 16 chars). Padrao: SMARTPACS
 
 .PARAMETER DicomPort
     Porta TCP do receptor DICOM. Padrao: 104
 
 .PARAMETER ServiceName
-    Nome do servico Windows. Padrao: DicomCloudAgent
+    Nome do servico Windows. Padrao: SmartPACSAgent
 
 .PARAMETER Silent
     Executa sem prompts. Requer AgentId e ApiKey.
@@ -49,7 +49,7 @@
     powershell -ExecutionPolicy Bypass -File .\install.ps1 -Silent `
         -AgentId "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" `
         -ApiKey  "agt_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" `
-        -CloudApiUrl "https://api.dicomcloud.com.br"
+        -CloudApiUrl "https://api.smartpacs.com.br"
 
 .EXAMPLE
     powershell -ExecutionPolicy Bypass -File .\install.ps1 -Uninstall
@@ -63,7 +63,7 @@ param(
     [string]$CloudApiUrl = "",
     [string]$AeTitle     = "",
     [int]   $DicomPort   = 0,
-    [string]$ServiceName = "DicomCloudAgent",
+    [string]$ServiceName = "SmartPACSAgent",
     [switch]$Silent,
     [switch]$Uninstall,
     [switch]$NoService,
@@ -76,9 +76,9 @@ $ErrorActionPreference = "Continue"
 # Constantes
 # ============================================================
 $INSTALLER_VERSION  = "1.0.0"
-$DEFAULT_INSTALL    = "C:\DicomCloud\EdgeAgent"
+$DEFAULT_INSTALL    = "C:\SmartPACS\EdgeAgent"
 $DEFAULT_CLOUD_URL  = "http://localhost:3001"
-$DEFAULT_AE_TITLE   = "DICOMCLOUD"
+$DEFAULT_AE_TITLE   = "SMARTPACS"
 $DEFAULT_PORT       = 104
 $NODE_MIN_VER       = "22.5.0"
 $NODE_ZIP_URL       = "https://nodejs.org/dist/v22.13.1/node-v22.13.1-win-x64.zip"
@@ -171,7 +171,7 @@ function Write-Banner {
     Write-Host ""
     Write-Host "  +======================================================+" -ForegroundColor Cyan
     Write-Host "  |                                                      |" -ForegroundColor Cyan
-    Write-Host "  |    DicomCloud -- Edge Agent Installer v$INSTALLER_VERSION         |" -ForegroundColor Cyan
+    Write-Host "  |    SmartPACS -- Edge Agent Installer v$INSTALLER_VERSION         |" -ForegroundColor Cyan
     Write-Host "  |                                                      |" -ForegroundColor Cyan
     Write-Host "  +======================================================+" -ForegroundColor Cyan
     Write-Host ""
@@ -398,21 +398,21 @@ function Copy-AgentFiles {
             }
         }
 
-        # Se estamos no monorepo, copiar tambem o pacote @dicomcloud/types ja compilado
+        # Se estamos no monorepo, copiar tambem o pacote @smartpacs/types ja compilado
         # (nao esta no npm publico -- e um pacote interno do workspace)
         $typesDistSrc = Join-Path $monoRoot "packages\types\dist"
-        $typesDistDst = Join-Path $DestDir "node_modules\@dicomcloud\types"
+        $typesDistDst = Join-Path $DestDir "node_modules\@smartpacs\types"
         if ($isMonorepo -and (Test-Path $typesDistSrc)) {
-            Write-Info "Copiando @dicomcloud/types do workspace..."
+            Write-Info "Copiando @smartpacs/types do workspace..."
             New-Item -ItemType Directory -Force -Path $typesDistDst | Out-Null
             Copy-Item "$typesDistSrc\*" $typesDistDst -Recurse -Force
             # Copiar package.json do types
             $typesPkg = Join-Path $monoRoot "packages\types\package.json"
             if (Test-Path $typesPkg) { Copy-Item $typesPkg $typesDistDst -Force }
-            Write-OK "@dicomcloud/types copiado"
+            Write-OK "@smartpacs/types copiado"
         } elseif ($isMonorepo) {
-            # Compilar @dicomcloud/types primeiro
-            Write-Info "Compilando @dicomcloud/types..."
+            # Compilar @smartpacs/types primeiro
+            Write-Info "Compilando @smartpacs/types..."
             $typesRoot = Join-Path $monoRoot "packages\types"
             Push-Location $typesRoot
             try {
@@ -421,7 +421,7 @@ function Copy-AgentFiles {
                     New-Item -ItemType Directory -Force -Path $typesDistDst | Out-Null
                     Copy-Item "$typesDistSrc\*" $typesDistDst -Recurse -Force
                     Copy-Item (Join-Path $typesRoot "package.json") $typesDistDst -Force
-                    Write-OK "@dicomcloud/types compilado e copiado"
+                    Write-OK "@smartpacs/types compilado e copiado"
                 }
             } finally {
                 Pop-Location
@@ -433,7 +433,7 @@ function Copy-AgentFiles {
     }
 
     Write-Fail "Arquivos do agente nao encontrados."
-    Write-Info "Execute install.ps1 a partir da pasta installer\ do repositorio DicomCloud."
+    Write-Info "Execute install.ps1 a partir da pasta installer\ do repositorio SmartPACS."
     return $false
 }
 
@@ -450,7 +450,7 @@ function Invoke-AgentBuild {
 
     Push-Location $AgentDir
     try {
-        # Usar --legacy-peer-deps para evitar conflitos, e ignorar @dicomcloud/types
+        # Usar --legacy-peer-deps para evitar conflitos, e ignorar @smartpacs/types
         # se ja foi copiado manualmente para node_modules
         Write-Info "npm install --omit=dev ..."
         & npm install --omit=dev --no-audit --no-fund --legacy-peer-deps 2>&1 | ForEach-Object { Write-Info $_ }
@@ -491,7 +491,7 @@ function New-EnvFile {
     )
 
     $lines = @(
-        "# DicomCloud Edge Agent -- gerado em $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')",
+        "# SmartPACS Edge Agent -- gerado em $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')",
         "# Nao compartilhe este arquivo -- contem credenciais sensiveis.",
         "",
         "# Identidade do agente",
@@ -571,8 +571,8 @@ function Register-WinService {
         & $NssmExe set     $SvcName AppRotateOnline   1                           | Out-Null
         & $NssmExe set     $SvcName AppRotateBytes    10485760                    | Out-Null
         & $NssmExe set     $SvcName Start             SERVICE_AUTO_START          | Out-Null
-        & $NssmExe set     $SvcName DisplayName       "DicomCloud Edge Agent"     | Out-Null
-        & $NssmExe set     $SvcName Description       "Receptor DICOM DicomCloud" | Out-Null
+        & $NssmExe set     $SvcName DisplayName       "SmartPACS Edge Agent"     | Out-Null
+        & $NssmExe set     $SvcName Description       "Receptor DICOM SmartPACS" | Out-Null
         & $NssmExe set     $SvcName ObjectName        LocalSystem                 | Out-Null
         Write-OK "Servico '$SvcName' registrado via NSSM"
     } else {
@@ -580,7 +580,7 @@ function Register-WinService {
         Write-Info "Criando servico '$SvcName' via sc.exe (sem NSSM)..."
         $binPath = "`"$NodeExe`" `"$mainJs`""
         & sc.exe create $SvcName binPath= $binPath start= auto obj= LocalSystem | Out-Null
-        & sc.exe description $SvcName "Receptor DICOM e agente DicomCloud" | Out-Null
+        & sc.exe description $SvcName "Receptor DICOM e agente SmartPACS" | Out-Null
         # Reiniciar automaticamente em caso de falha
         & sc.exe failure $SvcName reset= 86400 actions= restart/5000/restart/10000/restart/30000 | Out-Null
         Write-OK "Servico '$SvcName' registrado via sc.exe"
@@ -616,11 +616,11 @@ function Start-WinService {
 # ============================================================
 function Set-DicomFirewall {
     param([int]$Port)
-    $rule = "DicomCloud Edge Agent - DICOM SCP"
+    $rule = "SmartPACS Edge Agent - DICOM SCP"
     Remove-NetFirewallRule -DisplayName $rule -ErrorAction SilentlyContinue | Out-Null
     New-NetFirewallRule -DisplayName $rule -Direction Inbound -Protocol TCP `
         -LocalPort $Port -Action Allow `
-        -Description "Porta DICOM C-STORE para DicomCloud Edge Agent" | Out-Null
+        -Description "Porta DICOM C-STORE para SmartPACS Edge Agent" | Out-Null
     Write-OK "Regra de firewall criada (TCP $Port)"
 }
 
@@ -631,9 +631,9 @@ function New-Shortcuts {
     param([string]$AgentDir, [string]$SvcName, [string]$NssmExe)
     try {
         $shell = New-Object -ComObject WScript.Shell
-        $sc = $shell.CreateShortcut("$env:Public\Desktop\DicomCloud Agent - Logs.lnk")
+        $sc = $shell.CreateShortcut("$env:Public\Desktop\SmartPACS Agent - Logs.lnk")
         $sc.TargetPath = Join-Path $AgentDir "storage\logs"
-        $sc.Description = "DicomCloud Edge Agent - Logs"
+        $sc.Description = "SmartPACS Edge Agent - Logs"
         $sc.Save()
         Write-OK "Atalho criado na area de trabalho"
     } catch {
@@ -646,7 +646,7 @@ function New-Shortcuts {
 # ============================================================
 function Invoke-Uninstall {
     Write-Banner
-    Write-Host "  Desinstalacao do DicomCloud Edge Agent" -ForegroundColor Yellow
+    Write-Host "  Desinstalacao do SmartPACS Edge Agent" -ForegroundColor Yellow
     Write-Host ""
     if (-not $Silent) {
         if (-not (Read-YesNo "Confirmar desinstalacao?" $false)) {
@@ -669,7 +669,7 @@ function Invoke-Uninstall {
         Write-OK "Servico removido via sc.exe"
     }
 
-    Remove-NetFirewallRule -DisplayName "DicomCloud Edge Agent - DICOM SCP" -ErrorAction SilentlyContinue | Out-Null
+    Remove-NetFirewallRule -DisplayName "SmartPACS Edge Agent - DICOM SCP" -ErrorAction SilentlyContinue | Out-Null
     Write-OK "Regra de firewall removida"
 
     if (Test-Path $dir) {
@@ -683,7 +683,7 @@ function Invoke-Uninstall {
         }
     }
 
-    Remove-Item "$env:Public\Desktop\DicomCloud Agent*.lnk" -Force -ErrorAction SilentlyContinue
+    Remove-Item "$env:Public\Desktop\SmartPACS Agent*.lnk" -Force -ErrorAction SilentlyContinue
     Write-Host ""
     Write-Host "  Desinstalacao concluida." -ForegroundColor Green
     exit 0
@@ -696,7 +696,7 @@ function Invoke-Uninstall {
 Assert-Admin
 
 # Iniciar log
-$logDir0 = Join-Path $env:TEMP "DicomCloudInstaller"
+$logDir0 = Join-Path $env:TEMP "SmartPACSInstaller"
 New-Item -ItemType Directory -Force -Path $logDir0 | Out-Null
 $script:LogFile = Join-Path $logDir0 "install-$(Get-Date -Format 'yyyyMMdd-HHmmss').log"
 Write-Log "Installer v$INSTALLER_VERSION iniciado"
@@ -706,7 +706,7 @@ if ($Uninstall) { Invoke-Uninstall }
 Write-Banner
 
 if (-not $Silent) {
-    Write-Host "  Este assistente instala o DicomCloud Edge Agent." -ForegroundColor DarkGray
+    Write-Host "  Este assistente instala o SmartPACS Edge Agent." -ForegroundColor DarkGray
     Write-Host "  PRE-REQUISITO: registre o agente no portal antes de continuar." -ForegroundColor Yellow
     Write-Host "  (Portal -> Agentes Edge -> Registrar Agente)" -ForegroundColor Yellow
     Write-Host ""
@@ -724,7 +724,7 @@ if (-not $InstallDir) {
     $InstallDir = if ($Silent) { $DEFAULT_INSTALL } else { Read-Value "Diretorio de instalacao" $DEFAULT_INSTALL }
 }
 
-if (-not $Silent) { Write-Host "`n  -- Credenciais (obtidas no portal DicomCloud) --" -ForegroundColor Cyan }
+if (-not $Silent) { Write-Host "`n  -- Credenciais (obtidas no portal SmartPACS) --" -ForegroundColor Cyan }
 if (-not $AgentId) {
     if ($Silent) { Write-Fail "-AgentId obrigatorio no modo silencioso"; exit 1 }
     $AgentId = Read-Value "Agent ID" "" -Required
@@ -737,7 +737,7 @@ if (-not $ClinicId -and -not $Silent) {
     $ClinicId = Read-Value "Clinic ID (opcional)" ""
 }
 if (-not $CloudApiUrl) {
-    $CloudApiUrl = if ($Silent) { $DEFAULT_CLOUD_URL } else { Read-Value "URL da API DicomCloud" $DEFAULT_CLOUD_URL }
+    $CloudApiUrl = if ($Silent) { $DEFAULT_CLOUD_URL } else { Read-Value "URL da API SmartPACS" $DEFAULT_CLOUD_URL }
 }
 
 if (-not $Silent) { Write-Host "`n  -- Configuracao DICOM --" -ForegroundColor Cyan }

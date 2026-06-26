@@ -1,6 +1,6 @@
-import { JwtPayload } from '@dicomcloud/types';
 import { Controller, Get, Post, Param, Body, ParseUUIDPipe } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import { JwtPayload } from '@smartpacs/types';
 
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 

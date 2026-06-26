@@ -1,9 +1,9 @@
 {
-  "uid": "dicomcloud-infra",
-  "title": "DicomCloud - API Process Health",
+  "uid": "smartpacs-infra",
+  "title": "SmartPACS - API Process Health",
   "schemaVersion": 39,
   "version": 1,
-  "tags": ["dicomcloud"],
+  "tags": ["smartpacs"],
   "timezone": "browser",
   "time": { "from": "now-6h", "to": "now" },
   "refresh": "30s",
@@ -15,7 +15,7 @@
       "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
       "fieldConfig": { "defaults": { "unit": "percentunit" }, "overrides": [] },
       "targets": [
-        { "refId": "A", "expr": "rate(dicomcloud_api_process_cpu_seconds_total[5m])", "legendFormat": "cpu" }
+        { "refId": "A", "expr": "rate(smartpacs_api_process_cpu_seconds_total[5m])", "legendFormat": "cpu" }
       ]
     },
     {
@@ -25,9 +25,9 @@
       "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
       "fieldConfig": { "defaults": { "unit": "bytes" }, "overrides": [] },
       "targets": [
-        { "refId": "A", "expr": "dicomcloud_api_process_resident_memory_bytes", "legendFormat": "RSS" },
-        { "refId": "B", "expr": "dicomcloud_api_nodejs_heap_size_used_bytes", "legendFormat": "Heap used" },
-        { "refId": "C", "expr": "dicomcloud_api_nodejs_heap_size_total_bytes", "legendFormat": "Heap total" }
+        { "refId": "A", "expr": "smartpacs_api_process_resident_memory_bytes", "legendFormat": "RSS" },
+        { "refId": "B", "expr": "smartpacs_api_nodejs_heap_size_used_bytes", "legendFormat": "Heap used" },
+        { "refId": "C", "expr": "smartpacs_api_nodejs_heap_size_total_bytes", "legendFormat": "Heap total" }
       ]
     },
     {
@@ -37,7 +37,7 @@
       "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
       "fieldConfig": { "defaults": { "unit": "s" }, "overrides": [] },
       "targets": [
-        { "refId": "A", "expr": "dicomcloud_api_nodejs_eventloop_lag_seconds", "legendFormat": "lag" }
+        { "refId": "A", "expr": "smartpacs_api_nodejs_eventloop_lag_seconds", "legendFormat": "lag" }
       ]
     },
     {
@@ -47,7 +47,7 @@
       "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
       "fieldConfig": { "defaults": { "unit": "s" }, "overrides": [] },
       "targets": [
-        { "refId": "A", "expr": "rate(dicomcloud_api_nodejs_gc_duration_seconds_sum[5m])", "legendFormat": "{{kind}}" }
+        { "refId": "A", "expr": "rate(smartpacs_api_nodejs_gc_duration_seconds_sum[5m])", "legendFormat": "{{kind}}" }
       ]
     },
     {
@@ -56,7 +56,7 @@
       "type": "timeseries",
       "gridPos": { "h": 8, "w": 12, "x": 0, "y": 16 },
       "targets": [
-        { "refId": "A", "expr": "dicomcloud_api_nodejs_active_handles_total", "legendFormat": "{{type}}" }
+        { "refId": "A", "expr": "smartpacs_api_nodejs_active_handles_total", "legendFormat": "{{type}}" }
       ]
     },
     {
@@ -66,7 +66,7 @@
       "gridPos": { "h": 8, "w": 12, "x": 12, "y": 16 },
       "fieldConfig": { "defaults": { "unit": "s" }, "overrides": [] },
       "targets": [
-        { "refId": "A", "expr": "time() - dicomcloud_api_process_start_time_seconds" }
+        { "refId": "A", "expr": "time() - smartpacs_api_process_start_time_seconds" }
       ]
     }
   ]

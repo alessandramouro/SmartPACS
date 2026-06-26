@@ -1,6 +1,6 @@
 'use client';
 
-import type { MfaSetupResponse } from '@dicomcloud/types';
+import type { MfaSetupResponse } from '@smartpacs/types';
 import { useMutation } from '@tanstack/react-query';
 import { ShieldCheck, ShieldOff, Loader2, KeyRound, Copy, Check } from 'lucide-react';
 import { useState } from 'react';

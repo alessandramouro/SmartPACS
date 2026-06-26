@@ -1,4 +1,3 @@
-import type { JwtPayload, ExportCommandPayload, ExportProgressEvent, ExportResultEvent } from '@dicomcloud/types';
 import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { EventEmitter2 } from '@nestjs/event-emitter';
@@ -12,6 +11,7 @@ import {
   OnGatewayConnection,
   OnGatewayDisconnect,
 } from '@nestjs/websockets';
+import type { JwtPayload, ExportCommandPayload, ExportProgressEvent, ExportResultEvent } from '@smartpacs/types';
 import { Server, Socket } from 'socket.io';
 
 import { Public } from '../../common/decorators/roles.decorator';
@@ -60,8 +60,8 @@ export class ExportGateway implements OnGatewayConnection, OnGatewayDisconnect {
       if (auth.token) {
         const payload = await this.jwtService.verifyAsync<JwtPayload>(auth.token, {
           secret: this.configService.get<string>('auth.jwtSecret'),
-          issuer: 'dicomcloud',
-          audience: 'dicomcloud-api',
+          issuer: 'smartpacs',
+          audience: 'smartpacs-api',
         });
 
         const session = await this.prisma.userSession.findFirst({

@@ -1,5 +1,5 @@
-import { UserRole, Permission } from '@dicomcloud/types';
 import { SetMetadata } from '@nestjs/common';
+import { UserRole, Permission } from '@smartpacs/types';
 
 export const ROLES_KEY = 'roles';
 export const Roles = (...roles: UserRole[]) => SetMetadata(ROLES_KEY, roles);

@@ -5,7 +5,7 @@
 
 ## Contexto
 
-O DicomCloud precisa isolar dados de diferentes clínicas/tenants garantindo que um tenant nunca acesse dados de outro.
+O SmartPACS precisa isolar dados de diferentes clínicas/tenants garantindo que um tenant nunca acesse dados de outro.
 
 ## Decisão
 

@@ -1,7 +1,7 @@
 import { createHash } from 'crypto';
 
-import type { DicomMetadata } from '@dicomcloud/types';
 import { Injectable, Logger } from '@nestjs/common';
+import type { DicomMetadata } from '@smartpacs/types';
 import * as fs from 'fs-extra';
 
 /**

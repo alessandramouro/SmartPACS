@@ -1,10 +1,10 @@
-import { JwtPayload } from '@dicomcloud/types';
 import {
   Controller, Get, Delete, Query, Param,
   ParseUUIDPipe, Res, HttpCode, HttpStatus, ForbiddenException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import { JwtPayload } from '@smartpacs/types';
 import { Response } from 'express';
 
 

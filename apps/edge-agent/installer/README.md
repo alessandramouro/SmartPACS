@@ -1,4 +1,4 @@
-# DicomCloud Edge Agent — Instalador
+# SmartPACS Edge Agent — Instalador
 
 Dois modos de distribuição:
 
@@ -26,20 +26,20 @@ Se não tiver Node.js 22+: o próprio instalador baixa e instala.
 # Clique com botão direito → "Executar como Administrador"
 # ou em um terminal elevado:
 
-cd DicomCloud\apps\edge-agent\installer
+cd SmartPACS\apps\edge-agent\installer
 powershell -ExecutionPolicy Bypass -File .\install.ps1
 ```
 
 O assistente vai perguntar:
 
 ```
-  Diretório de instalação [C:\DicomCloud\EdgeAgent] :
+  Diretório de instalação [C:\SmartPACS\EdgeAgent] :
   Agent ID : xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
   API Key  : agt_xxx...
-  URL da API DicomCloud [http://localhost:3001] :
-  AE Title DICOM [DICOMCLOUD] :
+  URL da API SmartPACS [http://localhost:3001] :
+  AE Title DICOM [SMARTPACS] :
   Porta DICOM [104] :
-  Nome do serviço Windows [DicomCloudAgent] :
+  Nome do serviço Windows [SmartPACSAgent] :
 ```
 
 ### Modo silencioso (MDM / automação)
@@ -48,10 +48,10 @@ O assistente vai perguntar:
 .\install.ps1 -Silent `
     -AgentId    "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" `
     -ApiKey     "agt_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" `
-    -CloudApiUrl "https://api.dicomcloud.com.br" `
+    -CloudApiUrl "https://api.smartpacs.com.br" `
     -AeTitle    "CLINICA01" `
     -DicomPort  11112 `
-    -InstallDir "C:\DicomCloud\EdgeAgent"
+    -InstallDir "C:\SmartPACS\EdgeAgent"
 ```
 
 ### Desinstalar
@@ -73,7 +73,7 @@ O assistente vai perguntar:
 ### Gerar o instalador
 
 ```powershell
-cd DicomCloud\apps\edge-agent\installer
+cd SmartPACS\apps\edge-agent\installer
 .\build-installer.ps1
 ```
 
@@ -82,7 +82,7 @@ O script faz automaticamente:
 2. Download NSSM, DCMTK, Node.js portátil
 3. Monta `installer\bundle\`
 4. Chama `iscc.exe installer.iss`
-5. Gera `installer\output\DicomCloudEdgeAgent-Setup-1.0.0.exe`
+5. Gera `installer\output\SmartPACSEdgeAgent-Setup-1.0.0.exe`
 
 ### Rebuild rápido (componentes já baixados)
 
@@ -109,10 +109,10 @@ O script faz automaticamente:
 | DCMTK (storescp) | 3.6.8 | Receptor DICOM TCP (C-STORE SCP) |
 | NSSM | 2.24 | Gerenciador de serviço Windows |
 
-### Estrutura criada em `C:\DicomCloud\EdgeAgent\`
+### Estrutura criada em `C:\SmartPACS\EdgeAgent\`
 
 ```
-C:\DicomCloud\EdgeAgent\
+C:\SmartPACS\EdgeAgent\
   dist\            JavaScript compilado
   node_modules\    Dependências de produção
   node\            Node.js portátil
@@ -131,7 +131,7 @@ C:\DicomCloud\EdgeAgent\
 
 ### Serviço Windows
 
-- **Nome:** DicomCloudAgent (configurável)
+- **Nome:** SmartPACSAgent (configurável)
 - **Tipo:** Automático — inicia com o Windows
 - **Conta:** LocalSystem
 - **Reinício automático:** configurado via NSSM
@@ -139,12 +139,12 @@ C:\DicomCloud\EdgeAgent\
 ### Regra de firewall
 
 - Regra inbound TCP na porta DICOM configurada (padrão: 104)
-- Nome: "DicomCloud Edge Agent - DICOM SCP"
+- Nome: "SmartPACS Edge Agent - DICOM SCP"
 
 ### Atalhos criados
 
-- `Desktop Público\DicomCloud Agent - Logs` → abre pasta de logs
-- `Desktop Público\DicomCloud Agent - Reiniciar` → reinicia o serviço
+- `Desktop Público\SmartPACS Agent - Logs` → abre pasta de logs
+- `Desktop Público\SmartPACS Agent - Reiniciar` → reinicia o serviço
 
 ---
 
@@ -154,7 +154,7 @@ No equipamento DICOM (ultrassom, raio-X, tomógrafo):
 
 | Campo | Valor |
 |---|---|
-| Destination AE Title | valor configurado no instalador (ex.: `DICOMCLOUD`) |
+| Destination AE Title | valor configurado no instalador (ex.: `SMARTPACS`) |
 | Destination IP | IP da workstation onde o agente está instalado |
 | Destination Port | porta configurada (ex.: `104` ou `11112`) |
 
@@ -168,13 +168,13 @@ O agente aparecerá como **ONLINE** no portal em até 15 segundos após iniciar.
 
 ```powershell
 # Ver logs
-Get-Content "C:\DicomCloud\EdgeAgent\storage\logs\agent-error.log" -Tail 50
+Get-Content "C:\SmartPACS\EdgeAgent\storage\logs\agent-error.log" -Tail 50
 
 # Status do serviço
-Get-Service DicomCloudAgent
+Get-Service SmartPACSAgent
 
 # Reiniciar manualmente
-& "C:\DicomCloud\EdgeAgent\nssm\nssm.exe" restart DicomCloudAgent
+& "C:\SmartPACS\EdgeAgent\nssm\nssm.exe" restart SmartPACSAgent
 ```
 
 ### Porta 104 recusada
@@ -192,14 +192,14 @@ netstat -ano | findstr :104
 storescp --version
 
 # Se não estiver, adicionar manualmente
-$env:Path += ";C:\DicomCloud\EdgeAgent\dcmtk\bin"
+$env:Path += ";C:\SmartPACS\EdgeAgent\dcmtk\bin"
 ```
 
 ### Atualizar credenciais (.env)
 
 ```powershell
-notepad "C:\DicomCloud\EdgeAgent\.env"
+notepad "C:\SmartPACS\EdgeAgent\.env"
 # Edite EDGE_AGENT_ID e EDGE_AGENT_API_KEY
 # Depois reinicie o serviço:
-& "C:\DicomCloud\EdgeAgent\nssm\nssm.exe" restart DicomCloudAgent
+& "C:\SmartPACS\EdgeAgent\nssm\nssm.exe" restart SmartPACSAgent
 ```

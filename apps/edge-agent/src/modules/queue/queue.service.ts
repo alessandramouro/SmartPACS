@@ -1,5 +1,5 @@
-import type { DicomMetadata } from '@dicomcloud/types';
 import { Injectable, Logger } from '@nestjs/common';
+import type { DicomMetadata } from '@smartpacs/types';
 import { v4 as uuidv4 } from 'uuid';
 
 import { DatabaseService } from '../../database/database.service';
@@ -139,7 +139,7 @@ export class QueueService {
   }
 
   private buildRemotePath(studyId: string, filePath: string, config: Record<string, unknown>): string {
-    const basePath = (config.folderPath as string) || '/DicomCloud';
+    const basePath = (config.folderPath as string) || '/SmartPACS';
     const fileName = filePath.split(/[/\\]/).pop() || 'file.dcm';
     return `${basePath}/studies/${studyId}/${fileName}`;
   }

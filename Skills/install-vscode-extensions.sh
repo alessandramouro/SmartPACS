@@ -11,7 +11,7 @@ GREEN='\033[0;32m'
 NC='\033[0m'
 
 echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-echo -e "${CYAN}  DicomCloud — Instalando extensões VS Code${NC}"
+echo -e "${CYAN}  SmartPACS — Instalando extensões VS Code${NC}"
 echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
 extensions=(

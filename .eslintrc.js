@@ -1,4 +1,4 @@
 module.exports = {
   root: true,
-  extends: ['@dicomcloud/eslint-config'],
+  extends: ['@smartpacs/eslint-config'],
 };

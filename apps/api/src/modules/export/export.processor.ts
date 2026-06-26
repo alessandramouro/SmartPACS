@@ -1,6 +1,6 @@
-import { StorageDestinationType, ExportCommandPayload } from '@dicomcloud/types';
 import { Processor, Process } from '@nestjs/bull';
 import { Logger } from '@nestjs/common';
+import { StorageDestinationType, ExportCommandPayload } from '@smartpacs/types';
 import { Job } from 'bull';
 
 import { PrismaService } from '../../prisma/prisma.service';

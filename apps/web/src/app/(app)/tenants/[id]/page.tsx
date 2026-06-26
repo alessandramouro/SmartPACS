@@ -1,7 +1,7 @@
 'use client';
 
-import type { PaginatedResponse } from '@dicomcloud/types';
 import { zodResolver } from '@hookform/resolvers/zod';
+import type { PaginatedResponse } from '@smartpacs/types';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   Building2, ArrowLeft, RefreshCw, Plus, Server,
@@ -376,7 +376,7 @@ function CreateClinicModal({
             </div>
             <Field label="Responsável"><input {...register('contactResponsible')} placeholder="Dr. João Silva" className={inputClass} /></Field>
             <Field label="AE Title DICOM">
-              <input {...register('dicomAeTitle')} placeholder="DICOMCLOUD" maxLength={16} className={`${inputClass} font-mono uppercase`} />
+              <input {...register('dicomAeTitle')} placeholder="SMARTPACS" maxLength={16} className={`${inputClass} font-mono uppercase`} />
             </Field>
           </DialogBody>
           <DialogFooter>

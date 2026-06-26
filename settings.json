@@ -1,6 +1,6 @@
 {
   // =============================================================================
-  //  DicomCloud — .vscode/settings.json
+  //  SmartPACS — .vscode/settings.json
   //  Coloque este arquivo em: SEU_PROJETO/.vscode/settings.json
   // =============================================================================
 
@@ -228,7 +228,7 @@
       "token": ""
     },
     "staging": {
-      "baseUrl": "https://app.dicomcloud.com.br/api",
+      "baseUrl": "https://app.smartpacs.com.br/api",
       "token": ""
     }
   }

@@ -1,4 +1,4 @@
-# DicomCloud Edge Agent Dockerfile
+# SmartPACS Edge Agent Dockerfile
 # Includes dcmtk for DICOM SCP support
 FROM node:20-alpine AS base
 RUN apk add --no-cache dcmtk curl dumb-init

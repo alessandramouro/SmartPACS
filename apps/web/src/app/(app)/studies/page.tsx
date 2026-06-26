@@ -1,6 +1,6 @@
 'use client';
 
-import type { PaginatedResponse, Study, ExportProgressEvent, ExportResultEvent } from '@dicomcloud/types';
+import type { PaginatedResponse, Study, ExportProgressEvent, ExportResultEvent } from '@smartpacs/types';
 import { useQuery } from '@tanstack/react-query';
 import {
   Search, Filter, Download, RefreshCw, ChevronLeft, ChevronRight, FileSpreadsheet,

@@ -101,9 +101,9 @@ async function bootstrap() {
   // ─── Swagger Documentation ───────────────────────────────────
   if (nodeEnv !== 'production') {
     const swaggerConfig = new DocumentBuilder()
-      .setTitle('DicomCloud API')
+      .setTitle('SmartPACS API')
       .setDescription(
-        `## DicomCloud Enterprise Medical Imaging SaaS API
+        `## SmartPACS Enterprise Medical Imaging SaaS API
 
 Multi-tenant platform for managing DICOM studies from medical imaging equipment.
 
@@ -156,7 +156,7 @@ Include tenant context via JWT claims or \`X-Tenant-ID\` header.
         filter: true,
         showRequestDuration: true,
       },
-      customSiteTitle: 'DicomCloud API Docs',
+      customSiteTitle: 'SmartPACS API Docs',
     });
 
     logger.info(`Swagger available at: ${apiUrl}/docs`);
@@ -167,13 +167,13 @@ Include tenant context via JWT claims or \`X-Tenant-ID\` header.
 
   await app.listen(port);
 
-  logger.info(`DicomCloud API running in ${nodeEnv} mode`);
+  logger.info(`SmartPACS API running in ${nodeEnv} mode`);
   logger.info(`API listening on: ${apiUrl}`);
   logger.info(`API docs:         ${apiUrl}/docs`);
   logger.info(`Health check:     ${apiUrl}/health`);
 }
 
 bootstrap().catch((err) => {
-  console.error('Failed to start DicomCloud API:', err);
+  console.error('Failed to start SmartPACS API:', err);
   process.exit(1);
 });

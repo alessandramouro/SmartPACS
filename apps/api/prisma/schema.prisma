@@ -1,4 +1,4 @@
-// DicomCloud - Prisma Schema
+// SmartPACS - Prisma Schema
 // Enterprise Medical Imaging SaaS Platform
 // LGPD/HIPAA Compliant
 
@@ -218,7 +218,7 @@ model Clinic {
   contactResponsiblePhone String? @db.VarChar(20)
 
   // DICOM config
-  dicomAeTitle  String @default("DICOMCLOUD") @db.VarChar(16)
+  dicomAeTitle  String @default("SMARTPACS") @db.VarChar(16)
   dicomPort     Int    @default(104)
   dicomAllowedCallingAeTitles Json @default("[]")
 

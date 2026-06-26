@@ -1,10 +1,10 @@
 import { randomBytes, createHmac } from 'crypto';
 
-import { JwtPayload } from '@dicomcloud/types';
 import { InjectQueue } from '@nestjs/bull';
 import { Injectable, Logger, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { OnEvent } from '@nestjs/event-emitter';
+import { JwtPayload } from '@smartpacs/types';
 import { Queue } from 'bull';
 
 

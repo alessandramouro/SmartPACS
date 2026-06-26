@@ -1,8 +1,8 @@
-# DicomCloud
+# SmartPACS
 
 **Enterprise SaaS Platform for Medical Imaging Management**
 
-DicomCloud is a multi-tenant SaaS platform for small and medium diagnostic imaging clinics. It receives DICOM images and videos from ultrasound equipment, organizes studies automatically, and synchronizes to Google Drive, Microsoft OneDrive, or NAS/SMB — with offline resilience.
+SmartPACS is a multi-tenant SaaS platform for small and medium diagnostic imaging clinics. It receives DICOM images and videos from ultrasound equipment, organizes studies automatically, and synchronizes to Google Drive, Microsoft OneDrive, or NAS/SMB — with offline resilience.
 
 ---
 
@@ -10,7 +10,7 @@ DicomCloud is a multi-tenant SaaS platform for small and medium diagnostic imagi
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                    DicomCloud Platform                          │
+│                    SmartPACS Platform                          │
 │                                                                 │
 │  ┌─────────────┐    ┌─────────────┐    ┌─────────────────────┐ │
 │  │  Next.js    │    │  NestJS API │    │   PostgreSQL +       │ │
@@ -74,8 +74,8 @@ DicomCloud is a multi-tenant SaaS platform for small and medium diagnostic imagi
 ### 1. Clone and Configure
 
 ```bash
-git clone https://github.com/your-org/dicomcloud.git
-cd dicomcloud
+git clone https://github.com/your-org/smartpacs.git
+cd smartpacs
 cp .env.example .env
 # Edit .env with your values (minimum: JWT secrets + encryption keys)
 ```
@@ -107,9 +107,9 @@ npm run db:seed
 npm run dev
 
 # Or individually
-npm run dev --filter=@dicomcloud/api
-npm run dev --filter=@dicomcloud/web
-npm run dev --filter=@dicomcloud/edge-agent
+npm run dev --filter=@smartpacs/api
+npm run dev --filter=@smartpacs/web
+npm run dev --filter=@smartpacs/edge-agent
 ```
 
 ### 6. Access
@@ -120,7 +120,7 @@ npm run dev --filter=@dicomcloud/edge-agent
 | API Docs (Swagger) | http://localhost:3001/docs |
 | Health Check | http://localhost:3001/health |
 | Prometheus | http://localhost:9090 |
-| Grafana | http://localhost:3003 (admin/dicomcloud) |
+| Grafana | http://localhost:3003 (admin/smartpacs) |
 | MailHog | http://localhost:8025 |
 | pgAdmin | http://localhost:5050 |
 
@@ -128,7 +128,7 @@ npm run dev --filter=@dicomcloud/edge-agent
 
 | Role | Email | Password |
 |------|-------|----------|
-| Super Admin | admin@dicomcloud.com | Admin@123456! |
+| Super Admin | admin@smartpacs.com | Admin@123456! |
 | Demo Clinic Admin | admin@clinicademo.com | Demo@123456! |
 
 ---
@@ -136,7 +136,7 @@ npm run dev --filter=@dicomcloud/edge-agent
 ## Project Structure
 
 ```
-DicomCloud/
+SmartPACS/
 ├── apps/
 │   ├── api/                   # NestJS Backend
 │   │   ├── src/
@@ -211,7 +211,7 @@ DicomCloud/
 
 ## Security
 
-DicomCloud is designed for LGPD (Brazil) and HIPAA readiness:
+SmartPACS is designed for LGPD (Brazil) and HIPAA readiness:
 
 - **Encryption**: AES-256-GCM for sensitive storage configs
 - **Passwords**: Argon2id with high memory cost
@@ -262,14 +262,14 @@ cat > apps/edge-agent/.env << EOF
 EDGE_AGENT_ID=<agent-id-from-registration>
 EDGE_AGENT_API_KEY=<api-key-from-registration>
 EDGE_AGENT_CLINIC_ID=<clinic-id>
-CLOUD_API_URL=https://your-dicomcloud-instance.com
+CLOUD_API_URL=https://your-smartpacs-instance.com
 DICOM_AE_TITLE=YOURAEITLE
 DICOM_SCP_PORT=104
-STORAGE_PATH=C:\DicomCloud\storage   # Windows
+STORAGE_PATH=C:\SmartPACS\storage   # Windows
 EOF
 
 # 3. Start agent
-npm run dev --filter=@dicomcloud/edge-agent
+npm run dev --filter=@smartpacs/edge-agent
 ```
 
 ---
@@ -295,4 +295,4 @@ docker compose -f docker-compose.prod.yml exec api npm run db:seed
 
 ## License
 
-Proprietary — DicomCloud © 2025. All rights reserved.
+Proprietary — SmartPACS © 2025. All rights reserved.

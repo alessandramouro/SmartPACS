@@ -33,7 +33,7 @@ async function ensureEnrolled() {
       platform: os.platform(),
       osVersion: os.release(),
       dicomConfig: {
-        aeTitle: process.env.DICOM_AE_TITLE || 'DICOMCLOUD',
+        aeTitle: process.env.DICOM_AE_TITLE || 'SMARTPACS',
         port: parseInt(process.env.DICOM_SCP_PORT || '104', 10),
         allowedCallingAeTitles: (process.env.DICOM_ALLOWED_AE_TITLES || '').split(',').filter(Boolean),
         receiveDirectory: process.env.DICOM_RECEIVED_DIR || './storage/received',
@@ -68,7 +68,7 @@ async function bootstrap() {
   const stateService = app.get(AgentStateService);
   await stateService.initialize();
 
-  logger.info(`DicomCloud Edge Agent running on port ${port}`);
+  logger.info(`SmartPACS Edge Agent running on port ${port}`);
   logger.info(`Agent ID: ${configService.get('agent.agentId') || 'unregistered'}`);
   logger.info(`DICOM SCP: AE=${configService.get('dicom.aeTitle')} PORT=${configService.get('dicom.port')}`);
 }

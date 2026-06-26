@@ -3,7 +3,7 @@ import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   output: 'standalone',
   reactStrictMode: true,
-  transpilePackages: ['@dicomcloud/types'],
+  transpilePackages: ['@smartpacs/types'],
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'avatars.githubusercontent.com' },

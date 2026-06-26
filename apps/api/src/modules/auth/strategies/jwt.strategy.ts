@@ -1,7 +1,7 @@
-import { JwtPayload } from '@dicomcloud/types';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
+import { JwtPayload } from '@smartpacs/types';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
 import { PrismaService } from '../../../prisma/prisma.service';
@@ -16,8 +16,8 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
       secretOrKey: configService.get<string>('auth.jwtSecret'),
-      issuer: 'dicomcloud',
-      audience: 'dicomcloud-api',
+      issuer: 'smartpacs',
+      audience: 'smartpacs-api',
     });
   }
 

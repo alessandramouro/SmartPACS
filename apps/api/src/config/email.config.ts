@@ -6,5 +6,5 @@ export default registerAs('email', () => ({
   secure: process.env.SMTP_SECURE === 'true',
   user: process.env.SMTP_USER,
   pass: process.env.SMTP_PASS,
-  from: process.env.SMTP_FROM || '"DicomCloud" <noreply@dicomcloud.com>',
+  from: process.env.SMTP_FROM || '"SmartPACS" <noreply@smartpacs.com>',
 }));

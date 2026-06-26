@@ -31,8 +31,8 @@
 ### 1. Clonar repositório
 
 ```bash
-git clone https://github.com/your-org/dicomcloud.git
-cd dicomcloud
+git clone https://github.com/your-org/smartpacs.git
+cd smartpacs
 ```
 
 ### 2. Variáveis de ambiente
@@ -92,13 +92,13 @@ npm run dev
 
 # Ou separado para debugging:
 # Terminal 1
-npm run dev --filter=@dicomcloud/api
+npm run dev --filter=@smartpacs/api
 
 # Terminal 2
-npm run dev --filter=@dicomcloud/web
+npm run dev --filter=@smartpacs/web
 
 # Terminal 3 (opcional — edge agent)
-npm run dev --filter=@dicomcloud/edge-agent
+npm run dev --filter=@smartpacs/edge-agent
 ```
 
 ### 7. Verificar
@@ -108,7 +108,7 @@ Abrir no browser:
 - http://localhost:3001/docs — Swagger
 - http://localhost:3001/health — Health check
 
-Login: `admin@dicomcloud.com` / `Admin@123456!`
+Login: `admin@smartpacs.com` / `Admin@123456!`
 
 ---
 
@@ -138,7 +138,7 @@ cd packages/types && npm run build
 ### Edge agent: porta 104 requer root
 ```bash
 # Use porta alternativa em desenvolvimento
-DICOM_SCP_PORT=11112 npm run dev --filter=@dicomcloud/edge-agent
+DICOM_SCP_PORT=11112 npm run dev --filter=@smartpacs/edge-agent
 ```
 
 ---
@@ -166,5 +166,5 @@ cd apps/api && npm run db:seed
 docker compose up -d prometheus grafana
 
 # Grafana: http://localhost:3003
-# Login: admin / dicomcloud
+# Login: admin / smartpacs
 ```

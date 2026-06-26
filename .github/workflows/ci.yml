@@ -35,7 +35,7 @@ jobs:
         run: npm ci
 
       - name: Build shared packages
-        run: npx turbo run build --filter=@dicomcloud/types
+        run: npx turbo run build --filter=@smartpacs/types
 
       - name: Generate Prisma client
         working-directory: apps/api
@@ -55,9 +55,9 @@ jobs:
       postgres:
         image: postgres:16-alpine
         env:
-          POSTGRES_DB: dicomcloud_test
-          POSTGRES_USER: dicomcloud
-          POSTGRES_PASSWORD: dicomcloud
+          POSTGRES_DB: smartpacs_test
+          POSTGRES_USER: smartpacs
+          POSTGRES_PASSWORD: smartpacs
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -89,7 +89,7 @@ jobs:
         run: npm ci
 
       - name: Build shared packages
-        run: npx turbo run build --filter=@dicomcloud/types
+        run: npx turbo run build --filter=@smartpacs/types
 
       - name: Generate Prisma client
         working-directory: apps/api
@@ -98,14 +98,14 @@ jobs:
       - name: Run migrations (test DB)
         working-directory: apps/api
         env:
-          DATABASE_URL: postgresql://dicomcloud:dicomcloud@localhost:5432/dicomcloud_test
+          DATABASE_URL: postgresql://smartpacs:smartpacs@localhost:5432/smartpacs_test
         run: npx prisma migrate deploy
 
       - name: Run tests
         working-directory: apps/api
         env:
           NODE_ENV: test
-          DATABASE_URL: postgresql://dicomcloud:dicomcloud@localhost:5432/dicomcloud_test
+          DATABASE_URL: postgresql://smartpacs:smartpacs@localhost:5432/smartpacs_test
           REDIS_URL: redis://localhost:6379
           JWT_SECRET: test-jwt-secret-min-32-chars-12345678
           JWT_REFRESH_SECRET: test-refresh-secret-min-32-chars-1234
@@ -136,13 +136,13 @@ jobs:
         run: npm ci
 
       - name: Build packages
-        run: npx turbo run build --filter=@dicomcloud/types
+        run: npx turbo run build --filter=@smartpacs/types
 
       - name: Build frontend
         env:
           NEXT_PUBLIC_API_URL: http://localhost:3001
           NEXT_PUBLIC_APP_URL: http://localhost:3000
-        run: npx turbo run build --filter=@dicomcloud/web
+        run: npx turbo run build --filter=@smartpacs/web
 
   # ─── Docker Build ─────────────────────────────────────────
   docker-build:

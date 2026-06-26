@@ -1,10 +1,10 @@
+import { Injectable, Logger, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import type {
   ExportCommandPayload,
   ExportProgressEvent,
   ExportResultEvent,
-} from '@dicomcloud/types';
-import { Injectable, Logger, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+} from '@smartpacs/types';
 import { io, Socket } from 'socket.io-client';
 
 import { ExportHandlerService } from './export-handler.service';

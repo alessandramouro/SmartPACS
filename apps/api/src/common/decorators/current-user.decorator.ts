@@ -1,5 +1,5 @@
-import { JwtPayload } from '@dicomcloud/types';
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import { JwtPayload } from '@smartpacs/types';
 
 export const CurrentUser = createParamDecorator(
   (data: keyof JwtPayload | undefined, ctx: ExecutionContext) => {

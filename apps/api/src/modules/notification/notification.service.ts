@@ -45,12 +45,12 @@ export class NotificationService {
   async sendWelcomeEmail(email: string, name: string, tempPassword?: string): Promise<void> {
     await this.sendEmail({
       to: email,
-      subject: 'Bem-vindo ao DicomCloud',
+      subject: 'Bem-vindo ao SmartPACS',
       html: `
         <h2>Olá, ${name}!</h2>
-        <p>Sua conta no DicomCloud foi criada.</p>
+        <p>Sua conta no SmartPACS foi criada.</p>
         ${tempPassword ? `<p>Senha temporária: <strong>${tempPassword}</strong></p><p>Por favor, altere-a no primeiro acesso.</p>` : ''}
-        <p><a href="${this.configService.get('app.url')}/login">Acessar DicomCloud</a></p>
+        <p><a href="${this.configService.get('app.url')}/login">Acessar SmartPACS</a></p>
       `,
     });
   }
@@ -60,11 +60,11 @@ export class NotificationService {
     const resetUrl = `${appUrl}/reset-password?token=${token}`;
     await this.sendEmail({
       to: email,
-      subject: 'Redefinição de senha — DicomCloud',
+      subject: 'Redefinição de senha — SmartPACS',
       html: this.emailTemplate({
         title: 'Redefinição de senha',
         greeting: `Olá, <strong>${name}</strong>!`,
-        body: 'Recebemos uma solicitação para redefinir a senha da sua conta no DicomCloud.',
+        body: 'Recebemos uma solicitação para redefinir a senha da sua conta no SmartPACS.',
         ctaUrl: resetUrl,
         ctaLabel: 'Redefinir minha senha',
         footer: 'Este link expira em <strong>2 horas</strong>.<br>Se não foi você quem solicitou, ignore este email — sua senha permanece a mesma.',
@@ -81,14 +81,14 @@ export class NotificationService {
     const appUrl = this.configService.get<string>('app.url', 'http://localhost:3000');
     await this.sendEmail({
       to: email,
-      subject: `[DicomCloud] Falha na exportação — ${destinationName}`,
+      subject: `[SmartPACS] Falha na exportação — ${destinationName}`,
       html: this.emailTemplate({
         title: 'Falha na exportação',
         greeting: 'Atenção — exportação com falha',
         body: `O estudo <strong>${studyId}</strong> falhou ao ser exportado para <strong>${destinationName}</strong>.<br><br>Erro: <code style="background:#f1f5f9;padding:2px 6px;border-radius:4px;">${error}</code>`,
         ctaUrl: `${appUrl}/studies/${studyId}`,
         ctaLabel: 'Ver estudo',
-        footer: 'Este é um alerta automático do DicomCloud.',
+        footer: 'Este é um alerta automático do SmartPACS.',
       }),
     });
   }
@@ -125,7 +125,7 @@ export class NotificationService {
                   <span style="color:white;font-size:18px;font-weight:bold;">D</span>
                 </td>
                 <td style="padding-left:12px;">
-                  <div style="color:#ffffff;font-size:18px;font-weight:700;letter-spacing:-0.3px;">DicomCloud</div>
+                  <div style="color:#ffffff;font-size:18px;font-weight:700;letter-spacing:-0.3px;">SmartPACS</div>
                   <div style="color:#94a3b8;font-size:11px;margin-top:2px;">Medical Imaging Platform</div>
                 </td>
               </tr>
@@ -166,10 +166,10 @@ export class NotificationService {
         <tr>
           <td style="border-top:1px solid #e2e8f0;padding:20px 32px;background:#f8fafc;">
             <p style="margin:0;font-size:12px;color:#94a3b8;line-height:1.6;">
-              ${footer || 'Este email foi enviado automaticamente pelo DicomCloud. Por favor, não responda.'}
+              ${footer || 'Este email foi enviado automaticamente pelo SmartPACS. Por favor, não responda.'}
             </p>
             <p style="margin:8px 0 0;font-size:11px;color:#cbd5e1;">
-              © ${new Date().getFullYear()} DicomCloud · LGPD/HIPAA Compliant
+              © ${new Date().getFullYear()} SmartPACS · LGPD/HIPAA Compliant
             </p>
           </td>
         </tr>
@@ -182,7 +182,7 @@ export class NotificationService {
   }
 
   async directSend(options: SendEmailOptions): Promise<void> {
-    const from = this.configService.get<string>('email.from', 'DicomCloud <noreply@dicomcloud.com>');
+    const from = this.configService.get<string>('email.from', 'SmartPACS <noreply@smartpacs.com>');
     try {
       await this.transporter.sendMail({
         from,

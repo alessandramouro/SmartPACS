@@ -9,8 +9,8 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
   title: {
-    default: 'DicomCloud — Medical Imaging Platform',
-    template: '%s | DicomCloud',
+    default: 'SmartPACS — Medical Imaging Platform',
+    template: '%s | SmartPACS',
   },
   description: 'Enterprise SaaS platform for DICOM medical imaging management with automated cloud sync',
   keywords: ['DICOM', 'medical imaging', 'PACS', 'cloud storage', 'healthcare'],

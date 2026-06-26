@@ -1,6 +1,6 @@
-import { JwtPayload } from '@dicomcloud/types';
 import { Injectable, NotFoundException, BadRequestException, ForbiddenException, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { JwtPayload } from '@smartpacs/types';
 
 import { EncryptionUtil } from '../../common/utils/encryption.util';
 import { PrismaService } from '../../prisma/prisma.service';

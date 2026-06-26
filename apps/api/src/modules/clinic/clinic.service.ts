@@ -1,4 +1,3 @@
-import { JwtPayload } from '@dicomcloud/types';
 import {
   Injectable,
   NotFoundException,
@@ -6,6 +5,7 @@ import {
   ConflictException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { JwtPayload } from '@smartpacs/types';
 
 import { EncryptionUtil, SENSITIVE_CONFIG_FIELDS } from '../../common/utils/encryption.util';
 import { parsePagination, buildPaginatedResponse, buildOrderBy } from '../../common/utils/pagination.util';
@@ -128,7 +128,7 @@ export class ClinicService {
         contactEmail: dto.contactEmail,
         contactWebsite: dto.contactWebsite,
         contactResponsible: dto.contactResponsible,
-        dicomAeTitle: dto.dicomAeTitle || 'DICOMCLOUD',
+        dicomAeTitle: dto.dicomAeTitle || 'SMARTPACS',
         dicomPort: dto.dicomPort || 104,
         timezone: dto.timezone || 'America/Sao_Paulo',
         autoExportEnabled: dto.autoExportEnabled ?? true,

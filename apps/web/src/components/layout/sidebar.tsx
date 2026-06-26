@@ -1,6 +1,6 @@
 'use client';
 
-import type { Permission } from '@dicomcloud/types';
+import type { Permission } from '@smartpacs/types';
 import {
   Activity, LayoutDashboard, Image, Users, Building,
   Server, HardDrive, FileText, LogOut, ChevronLeft,
@@ -50,7 +50,7 @@ export function Sidebar() {
           <Activity className="w-4 h-4 text-primary-foreground" />
         </div>
         {!collapsed && (
-          <span className="font-bold text-foreground text-sm truncate">DicomCloud</span>
+          <span className="font-bold text-foreground text-sm truncate">SmartPACS</span>
         )}
         <button
           onClick={() => setCollapsed(!collapsed)}

@@ -1,6 +1,6 @@
 'use client';
 
-import type { Study, StorageDestination, ExportJob } from '@dicomcloud/types';
+import type { Study, StorageDestination, ExportJob } from '@smartpacs/types';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { Loader2, HardDrive } from 'lucide-react';
 import { useState } from 'react';

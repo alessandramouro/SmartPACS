@@ -1,7 +1,7 @@
 'use client';
 
-import type { Clinic, PaginatedResponse } from '@dicomcloud/types';
 import { zodResolver } from '@hookform/resolvers/zod';
+import type { Clinic, PaginatedResponse } from '@smartpacs/types';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   Building2, Search, Plus, RefreshCw, Server, ChevronLeft, ChevronRight, Loader2, Pencil, Upload, X,
@@ -194,7 +194,7 @@ function ClinicFormFields({ register, errors, showStatus = false, setValue, watc
       <div className="border-t border-border pt-4">
         <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">DICOM</p>
         <Field label="AE Title (máx. 16 chars)" error={errors.dicomAeTitle?.message}>
-          <input {...register('dicomAeTitle')} placeholder="DICOMCLOUD" maxLength={16}
+          <input {...register('dicomAeTitle')} placeholder="SMARTPACS" maxLength={16}
             className={`${inputClass} font-mono uppercase`} />
         </Field>
       </div>

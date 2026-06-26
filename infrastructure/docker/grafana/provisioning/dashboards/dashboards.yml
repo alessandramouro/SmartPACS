@@ -1,9 +1,9 @@
 apiVersion: 1
 
 providers:
-  - name: DicomCloud
+  - name: SmartPACS
     orgId: 1
-    folder: DicomCloud
+    folder: SmartPACS
     type: file
     disableDeletion: false
     updateIntervalSeconds: 30

@@ -111,7 +111,7 @@ export async function createEdgeAgent(
       version: '1.0.0',
       apiKey,
       apiKeyHash,
-      dicomAeTitle: 'DICOMCLOUD',
+      dicomAeTitle: 'SMARTPACS',
       dicomPort: 11112,
     },
   });

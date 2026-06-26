@@ -26,7 +26,7 @@ export function TopBar() {
 
   const title = Object.entries(routeTitles).find(([key]) =>
     pathname === key || pathname.startsWith(key + '/'),
-  )?.[1] || 'DicomCloud';
+  )?.[1] || 'SmartPACS';
 
   return (
     <header className="h-14 border-b border-border bg-card flex items-center px-6 gap-4">

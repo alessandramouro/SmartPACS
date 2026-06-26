@@ -1,9 +1,9 @@
 {
-  "uid": "dicomcloud-postgres",
-  "title": "DicomCloud - PostgreSQL",
+  "uid": "smartpacs-postgres",
+  "title": "SmartPACS - PostgreSQL",
   "schemaVersion": 39,
   "version": 1,
-  "tags": ["dicomcloud"],
+  "tags": ["smartpacs"],
   "timezone": "browser",
   "time": { "from": "now-6h", "to": "now" },
   "refresh": "30s",
@@ -21,7 +21,7 @@
       "type": "stat",
       "gridPos": { "h": 6, "w": 6, "x": 6, "y": 0 },
       "fieldConfig": { "defaults": { "unit": "bytes" }, "overrides": [] },
-      "targets": [{ "refId": "A", "expr": "pg_database_size_bytes{datname=\"dicomcloud\"}" }]
+      "targets": [{ "refId": "A", "expr": "pg_database_size_bytes{datname=\"smartpacs\"}" }]
     },
     {
       "id": 3,
@@ -29,7 +29,7 @@
       "type": "timeseries",
       "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
       "targets": [
-        { "refId": "A", "expr": "pg_stat_database_numbackends{datname=\"dicomcloud\"}", "legendFormat": "connections" }
+        { "refId": "A", "expr": "pg_stat_database_numbackends{datname=\"smartpacs\"}", "legendFormat": "connections" }
       ]
     },
     {
@@ -38,8 +38,8 @@
       "type": "timeseries",
       "gridPos": { "h": 8, "w": 12, "x": 0, "y": 6 },
       "targets": [
-        { "refId": "A", "expr": "rate(pg_stat_database_xact_commit{datname=\"dicomcloud\"}[5m])", "legendFormat": "commits/s" },
-        { "refId": "B", "expr": "rate(pg_stat_database_xact_rollback{datname=\"dicomcloud\"}[5m])", "legendFormat": "rollbacks/s" }
+        { "refId": "A", "expr": "rate(pg_stat_database_xact_commit{datname=\"smartpacs\"}[5m])", "legendFormat": "commits/s" },
+        { "refId": "B", "expr": "rate(pg_stat_database_xact_rollback{datname=\"smartpacs\"}[5m])", "legendFormat": "rollbacks/s" }
       ]
     },
     {
@@ -51,7 +51,7 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "sum(rate(pg_stat_database_blks_hit{datname=\"dicomcloud\"}[5m])) / (sum(rate(pg_stat_database_blks_hit{datname=\"dicomcloud\"}[5m])) + sum(rate(pg_stat_database_blks_read{datname=\"dicomcloud\"}[5m])))",
+          "expr": "sum(rate(pg_stat_database_blks_hit{datname=\"smartpacs\"}[5m])) / (sum(rate(pg_stat_database_blks_hit{datname=\"smartpacs\"}[5m])) + sum(rate(pg_stat_database_blks_read{datname=\"smartpacs\"}[5m])))",
           "legendFormat": "hit ratio"
         }
       ]

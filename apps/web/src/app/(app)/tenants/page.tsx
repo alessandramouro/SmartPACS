@@ -1,7 +1,7 @@
 'use client';
 
-import type { PaginatedResponse } from '@dicomcloud/types';
 import { zodResolver } from '@hookform/resolvers/zod';
+import type { PaginatedResponse } from '@smartpacs/types';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   Building, Search, Plus, RefreshCw, ChevronLeft, ChevronRight,
@@ -106,7 +106,7 @@ function CreateTenantModal({ open, onClose }: { open: boolean; onClose: () => vo
         <DialogHeader>
           <DialogTitle>Novo Tenant (Empresa)</DialogTitle>
           <DialogDescription>
-            Cria uma nova empresa cliente na plataforma DicomCloud com seu Admin inicial.
+            Cria uma nova empresa cliente na plataforma SmartPACS com seu Admin inicial.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit((d) => mutation.mutate(d))}>

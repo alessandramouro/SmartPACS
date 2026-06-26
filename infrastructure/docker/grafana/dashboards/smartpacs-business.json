@@ -1,9 +1,9 @@
 {
-  "uid": "dicomcloud-business",
-  "title": "DicomCloud - Business Metrics",
+  "uid": "smartpacs-business",
+  "title": "SmartPACS - Business Metrics",
   "schemaVersion": 39,
   "version": 1,
-  "tags": ["dicomcloud"],
+  "tags": ["smartpacs"],
   "timezone": "browser",
   "time": { "from": "now-6h", "to": "now" },
   "refresh": "30s",
@@ -16,7 +16,7 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "sum(rate(dicomcloud_studies_ingested_total[5m])) by (modality)",
+          "expr": "sum(rate(smartpacs_studies_ingested_total[5m])) by (modality)",
           "legendFormat": "{{modality}}"
         }
       ]
@@ -29,7 +29,7 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "sum(rate(dicomcloud_export_jobs_total[5m])) by (status, destination_type)",
+          "expr": "sum(rate(smartpacs_export_jobs_total[5m])) by (status, destination_type)",
           "legendFormat": "{{status}} / {{destination_type}}"
         }
       ]
@@ -40,7 +40,7 @@
       "type": "stat",
       "gridPos": { "h": 6, "w": 6, "x": 0, "y": 8 },
       "targets": [
-        { "refId": "A", "expr": "dicomcloud_edge_agents_connected" }
+        { "refId": "A", "expr": "smartpacs_edge_agents_connected" }
       ]
     },
     {
@@ -51,7 +51,7 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "sum(rate(dicomcloud_http_request_duration_seconds_count{status_code=~\"5..\"}[5m]))",
+          "expr": "sum(rate(smartpacs_http_request_duration_seconds_count{status_code=~\"5..\"}[5m]))",
           "legendFormat": "5xx/s"
         }
       ]
@@ -64,7 +64,7 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "sum(rate(dicomcloud_http_request_duration_seconds_count[5m])) by (route)",
+          "expr": "sum(rate(smartpacs_http_request_duration_seconds_count[5m])) by (route)",
           "legendFormat": "{{route}}"
         }
       ]
@@ -78,7 +78,7 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "histogram_quantile(0.95, sum(rate(dicomcloud_http_request_duration_seconds_bucket[5m])) by (le, route))",
+          "expr": "histogram_quantile(0.95, sum(rate(smartpacs_http_request_duration_seconds_bucket[5m])) by (le, route))",
           "legendFormat": "{{route}}"
         }
       ]

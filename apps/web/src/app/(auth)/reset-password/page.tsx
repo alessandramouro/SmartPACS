@@ -97,7 +97,7 @@ function ResetPasswordForm() {
             <Activity className="w-6 h-6 text-primary-foreground" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-foreground">DicomCloud</h1>
+            <h1 className="text-2xl font-bold text-foreground">SmartPACS</h1>
             <p className="text-xs text-muted-foreground">Medical Imaging Platform</p>
           </div>
         </div>
@@ -186,7 +186,7 @@ function ResetPasswordForm() {
         </div>
 
         <p className="text-center text-xs text-muted-foreground mt-6">
-          DicomCloud v1.0 · LGPD/HIPAA Compliant
+          SmartPACS v1.0 · LGPD/HIPAA Compliant
         </p>
       </div>
     </div>

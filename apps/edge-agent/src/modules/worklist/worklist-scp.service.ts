@@ -27,7 +27,7 @@ export class WorklistScpService implements OnModuleInit, OnModuleDestroy {
   async onModuleInit() {
     if (!this.configService.get<boolean>('dicom.worklist.enabled', false)) return;
 
-    const aeTitle = this.configService.get<string>('dicom.aeTitle', 'DICOMCLOUD');
+    const aeTitle = this.configService.get<string>('dicom.aeTitle', 'SMARTPACS');
     const aeDir = path.join(this.worklistDir, aeTitle);
     await fs.ensureDir(aeDir);
     await fs.ensureFile(path.join(aeDir, 'lockfile'));

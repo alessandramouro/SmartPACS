@@ -1,7 +1,7 @@
 'use client';
 
-import type { User, Clinic, PaginatedResponse, CreateUserResponse, ResetPasswordResponse } from '@dicomcloud/types';
 import { zodResolver } from '@hookform/resolvers/zod';
+import type { User, Clinic, PaginatedResponse, CreateUserResponse, ResetPasswordResponse } from '@smartpacs/types';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   Users, Search, Plus, RefreshCw, Shield, ChevronLeft, ChevronRight, Loader2, Pencil, Trash2, KeyRound,

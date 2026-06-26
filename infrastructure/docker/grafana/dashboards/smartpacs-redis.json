@@ -1,9 +1,9 @@
 {
-  "uid": "dicomcloud-redis",
-  "title": "DicomCloud - Redis",
+  "uid": "smartpacs-redis",
+  "title": "SmartPACS - Redis",
   "schemaVersion": 39,
   "version": 1,
-  "tags": ["dicomcloud"],
+  "tags": ["smartpacs"],
   "timezone": "browser",
   "time": { "from": "now-6h", "to": "now" },
   "refresh": "30s",

@@ -24,8 +24,8 @@ import { LocalStrategy } from './strategies/local.strategy';
         secret: config.get<string>('auth.jwtSecret'),
         signOptions: {
           expiresIn: config.get<string>('auth.jwtAccessExpiresIn', '15m'),
-          issuer: 'dicomcloud',
-          audience: 'dicomcloud-api',
+          issuer: 'smartpacs',
+          audience: 'smartpacs-api',
         },
       }),
     }),

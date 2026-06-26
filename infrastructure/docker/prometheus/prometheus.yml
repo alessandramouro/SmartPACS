@@ -2,10 +2,10 @@ global:
   scrape_interval: 15s
   evaluation_interval: 15s
   external_labels:
-    monitor: 'dicomcloud'
+    monitor: 'smartpacs'
 
 scrape_configs:
-  - job_name: 'dicomcloud-api'
+  - job_name: 'smartpacs-api'
     static_configs:
       - targets: ['api:3001']
     metrics_path: '/api/v1/metrics'

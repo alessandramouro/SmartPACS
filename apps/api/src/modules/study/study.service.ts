@@ -1,9 +1,9 @@
 import { createHash } from 'crypto';
 
-import { JwtPayload } from '@dicomcloud/types';
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { StudyStatus } from '@prisma/client';
+import { JwtPayload } from '@smartpacs/types';
 
 import { studiesIngestedTotal } from '../../common/metrics/app-metrics';
 import { parsePagination, buildPaginatedResponse, buildOrderBy } from '../../common/utils/pagination.util';

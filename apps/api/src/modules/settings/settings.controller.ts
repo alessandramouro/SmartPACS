@@ -1,12 +1,12 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { JwtPayload } from '@dicomcloud/types';
 import {
   Controller, Get, Patch, Body, ForbiddenException, HttpCode, HttpStatus,
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { ApiPropertyOptional } from '@nestjs/swagger';
+import { JwtPayload } from '@smartpacs/types';
 import { IsString, IsOptional } from 'class-validator';
 
 import { CurrentUser } from '../../common/decorators/current-user.decorator';

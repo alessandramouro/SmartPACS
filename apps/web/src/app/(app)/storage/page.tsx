@@ -1,7 +1,7 @@
 'use client';
 
-import type { PaginatedResponse } from '@dicomcloud/types';
 import { zodResolver } from '@hookform/resolvers/zod';
+import type { PaginatedResponse } from '@smartpacs/types';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   HardDrive, Cloud, Network, Server, RefreshCw, CheckCircle,
@@ -332,7 +332,7 @@ function StorageConfigFields({ watch, register }: { watch: (k: string) => any; r
       <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Configuração SMB</p>
       <div className="grid grid-cols-2 gap-3">
         <Field label="Host / IP *"><input {...register('smbHost')} placeholder="192.168.1.100" className={inputClass} /></Field>
-        <Field label="Share (pasta compartilhada) *"><input {...register('smbShare')} placeholder="DicomCloud" className={inputClass} /></Field>
+        <Field label="Share (pasta compartilhada) *"><input {...register('smbShare')} placeholder="SmartPACS" className={inputClass} /></Field>
         <Field label="Caminho interno"><input {...register('smbPath')} placeholder="/estudos" className={inputClass} /></Field>
         <Field label="Domínio"><input {...register('smbDomain')} placeholder="WORKGROUP" className={inputClass} /></Field>
         <Field label="Usuário"><input {...register('smbUsername')} placeholder="usuario" className={inputClass} /></Field>
@@ -367,7 +367,7 @@ function StorageConfigFields({ watch, register }: { watch: (k: string) => any; r
     <div className="space-y-3 border-t border-border pt-4">
       <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Configuração Local</p>
       <Field label="Caminho da pasta *" hint="Caminho absoluto no servidor">
-        <input {...register('localPath')} placeholder="C:\DicomCloud\Storage" className={inputClass} />
+        <input {...register('localPath')} placeholder="C:\SmartPACS\Storage" className={inputClass} />
       </Field>
     </div>
   );
@@ -375,7 +375,7 @@ function StorageConfigFields({ watch, register }: { watch: (k: string) => any; r
     <div className="space-y-3 border-t border-border pt-4">
       <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Configuração {typeLabels[type]}</p>
       <Field label="Caminho da pasta" hint="Caminho na nuvem onde os estudos serão salvos">
-        <input {...register('folderPath')} placeholder="/DicomCloud/Estudos" className={inputClass} />
+        <input {...register('folderPath')} placeholder="/SmartPACS/Estudos" className={inputClass} />
       </Field>
     </div>
   );

@@ -1,4 +1,3 @@
-import { JwtPayload } from '@dicomcloud/types';
 import {
   Controller,
   Post,
@@ -17,6 +16,7 @@ import {
   ApiBearerAuth,
 } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
+import { JwtPayload } from '@smartpacs/types';
 import { Request as ExpressRequest } from 'express';
 
 import { CurrentUser } from '../../common/decorators/current-user.decorator';

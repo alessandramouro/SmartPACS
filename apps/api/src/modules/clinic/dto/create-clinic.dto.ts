@@ -26,7 +26,7 @@ export class CreateClinicDto {
   @ApiPropertyOptional() @IsOptional() @IsString() contactWebsite?: string;
   @ApiPropertyOptional() @IsOptional() @IsString() contactResponsible?: string;
 
-  @ApiPropertyOptional({ default: 'DICOMCLOUD' }) @IsOptional() @IsString() @MaxLength(16) dicomAeTitle?: string;
+  @ApiPropertyOptional({ default: 'SMARTPACS' }) @IsOptional() @IsString() @MaxLength(16) dicomAeTitle?: string;
   @ApiPropertyOptional({ default: 104 }) @IsOptional() @IsNumber() @Min(1024) @Max(65535) dicomPort?: number;
   @ApiPropertyOptional() @IsOptional() @IsString() timezone?: string;
   @ApiPropertyOptional() @IsOptional() @IsBoolean() autoExportEnabled?: boolean;

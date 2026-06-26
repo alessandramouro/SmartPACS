@@ -1,9 +1,9 @@
+import { Injectable, Logger } from '@nestjs/common';
 import type {
   ExportCommandPayload,
   ExportProgressEvent,
   ExportResultEvent,
-} from '@dicomcloud/types';
-import { Injectable, Logger } from '@nestjs/common';
+} from '@smartpacs/types';
 import * as fs from 'fs-extra';
 
 import { DatabaseService } from '../../database/database.service';
@@ -153,7 +153,7 @@ export class ExportHandlerService {
 
   /** Cloud-UUID-keyed path — distinct from QueueService's local-row-id convention. */
   private buildRemotePath(payload: ExportCommandPayload, filePath: string): string {
-    const basePath = payload.destinationPath || '/DicomCloud';
+    const basePath = payload.destinationPath || '/SmartPACS';
     const fileName = filePath.split(/[/\\]/).pop() || 'file.dcm';
     return `${basePath}/studies/${payload.studyId}/${fileName}`;
   }

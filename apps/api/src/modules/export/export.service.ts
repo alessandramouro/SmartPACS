@@ -1,8 +1,8 @@
-import { JwtPayload, ExportProgressEvent, StorageDestinationType } from '@dicomcloud/types';
 import { InjectQueue } from '@nestjs/bull';
 import { Injectable, Logger, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { JwtPayload, ExportProgressEvent, StorageDestinationType } from '@smartpacs/types';
 import { Queue } from 'bull';
 
 import { exportJobsTotal } from '../../common/metrics/app-metrics';

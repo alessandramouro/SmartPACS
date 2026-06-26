@@ -1,10 +1,10 @@
-import { JwtPayload } from '@dicomcloud/types';
 import {
   Controller, Get, Post, Delete,
   Body, Param, Query, Headers, ParseUUIDPipe, HttpCode, HttpStatus,
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiSecurity, ApiOperation } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
+import { JwtPayload } from '@smartpacs/types';
 
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { RequirePermissions, Public } from '../../common/decorators/roles.decorator';

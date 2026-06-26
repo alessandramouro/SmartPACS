@@ -1,4 +1,4 @@
-import { PaginationParams, PaginatedResponse } from '@dicomcloud/types';
+import { PaginationParams, PaginatedResponse } from '@smartpacs/types';
 
 export function parsePagination(params: PaginationParams): {
   skip: number;

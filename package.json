@@ -1,8 +1,8 @@
 {
-  "name": "dicomcloud",
+  "name": "smartpacs",
   "version": "1.0.0",
   "private": true,
-  "description": "DicomCloud - Enterprise SaaS Platform for Medical Imaging",
+  "description": "SmartPACS - Enterprise SaaS Platform for Medical Imaging",
   "workspaces": [
     "apps/*",
     "packages/*"

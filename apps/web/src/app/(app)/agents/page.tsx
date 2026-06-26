@@ -1,7 +1,7 @@
 'use client';
 
-import type { EdgeAgent, PaginatedResponse } from '@dicomcloud/types';
 import { zodResolver } from '@hookform/resolvers/zod';
+import type { EdgeAgent, PaginatedResponse } from '@smartpacs/types';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   Server, Wifi, WifiOff, RefreshCw, Clock, Cpu, MemoryStick,
@@ -60,7 +60,7 @@ function CopyButton({ text }: { text: string }) {
 const registerSchema = z.object({
   clinicId: z.string().uuid('Selecione uma clínica'),
   name: z.string().min(2, 'Nome obrigatório').max(100),
-  dicomAeTitle: z.string().min(1).max(16).default('DICOMCLOUD'),
+  dicomAeTitle: z.string().min(1).max(16).default('SMARTPACS'),
   dicomPort: z.coerce.number().int().min(1024).max(65535).default(104),
 });
 type RegisterForm = z.infer<typeof registerSchema>;
@@ -84,7 +84,7 @@ function RegisterAgentModal({ open, onClose }: { open: boolean; onClose: () => v
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm<RegisterForm>({
     resolver: zodResolver(registerSchema),
-    defaultValues: { dicomAeTitle: 'DICOMCLOUD', dicomPort: 104 },
+    defaultValues: { dicomAeTitle: 'SMARTPACS', dicomPort: 104 },
   });
 
   const mutation = useMutation({
@@ -124,7 +124,7 @@ function RegisterAgentModal({ open, onClose }: { open: boolean; onClose: () => v
             <DialogHeader>
               <DialogTitle>Registrar Agente Edge</DialogTitle>
               <DialogDescription>
-                Instale o DicomCloud Edge Agent em uma workstation e configure com as credenciais geradas.
+                Instale o SmartPACS Edge Agent em uma workstation e configure com as credenciais geradas.
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit((d) => mutation.mutate(d))}>
@@ -147,7 +147,7 @@ function RegisterAgentModal({ open, onClose }: { open: boolean; onClose: () => v
                 </Field>
                 <div className="grid grid-cols-2 gap-3">
                   <Field label="AE Title DICOM" error={errors.dicomAeTitle?.message} hint="Máx. 16 caracteres">
-                    <input {...register('dicomAeTitle')} placeholder="DICOMCLOUD" className={inputClass} />
+                    <input {...register('dicomAeTitle')} placeholder="SMARTPACS" className={inputClass} />
                   </Field>
                   <Field label="Porta DICOM" error={errors.dicomPort?.message} hint="Padrão: 104">
                     <input {...register('dicomPort')} type="number" placeholder="104" className={inputClass} />
@@ -484,7 +484,7 @@ export default function AgentsPage() {
         <div className="bg-card border border-border rounded-xl p-12 text-center text-muted-foreground">
           <Server size={40} className="mx-auto mb-3 opacity-30" />
           <p className="text-sm font-medium">Nenhum agente registrado</p>
-          <p className="text-xs mt-1 mb-4">Instale o DicomCloud Edge Agent em uma workstation</p>
+          <p className="text-xs mt-1 mb-4">Instale o SmartPACS Edge Agent em uma workstation</p>
           {can('clinics:write') && (
             <button onClick={() => setShowRegister(true)}
               className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors">

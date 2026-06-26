@@ -1,6 +1,5 @@
 import { randomInt } from 'crypto';
 
-import { JwtPayload } from '@dicomcloud/types';
 import {
   Injectable,
   NotFoundException,
@@ -8,6 +7,7 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import { UserStatus } from '@prisma/client';
+import { JwtPayload } from '@smartpacs/types';
 import * as argon2 from 'argon2';
 
 import { parsePagination, buildPaginatedResponse, buildOrderBy } from '../../common/utils/pagination.util';

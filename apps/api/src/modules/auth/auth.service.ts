@@ -1,11 +1,4 @@
 import {
-  LoginRequest,
-  LoginResponse,
-  JwtPayload,
-  MfaSetupResponse,
-  AuthUser,
-} from '@dicomcloud/types';
-import {
   Injectable,
   UnauthorizedException,
   ForbiddenException,
@@ -16,6 +9,13 @@ import { ConfigService } from '@nestjs/config';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { JwtService } from '@nestjs/jwt';
 import { User, UserStatus } from '@prisma/client';
+import {
+  LoginRequest,
+  LoginResponse,
+  JwtPayload,
+  MfaSetupResponse,
+  AuthUser,
+} from '@smartpacs/types';
 import * as argon2 from 'argon2';
 import { authenticator } from 'otplib';
 import * as qrcode from 'qrcode';
@@ -264,7 +264,7 @@ export class AuthService {
     }
 
     const secret = authenticator.generateSecret(32);
-    const otpAuthUrl = authenticator.keyuri(user.email, 'DicomCloud', secret);
+    const otpAuthUrl = authenticator.keyuri(user.email, 'SmartPACS', secret);
     const qrCodeUrl = await qrcode.toDataURL(otpAuthUrl);
     const backupCodes = Array.from({ length: 8 }, () =>
       Math.random().toString(36).substring(2, 10).toUpperCase(),

@@ -1,6 +1,6 @@
 {
   // =============================================================================
-  //  DicomCloud — .vscode/extensions.json
+  //  SmartPACS — .vscode/extensions.json
   //  Quando outro dev abrir o projeto, o VS Code sugere instalar tudo isso
   // =============================================================================
   "recommendations": [

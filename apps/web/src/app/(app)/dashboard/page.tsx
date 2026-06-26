@@ -1,6 +1,6 @@
 'use client';
 
-import { StudyStats, EdgeAgent } from '@dicomcloud/types';
+import { StudyStats, EdgeAgent } from '@smartpacs/types';
 import { useQuery } from '@tanstack/react-query';
 import {
   Image, Activity, CheckCircle,

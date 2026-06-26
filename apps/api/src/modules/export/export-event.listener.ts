@@ -1,6 +1,6 @@
-import { ExportProgressEvent, ExportResultEvent } from '@dicomcloud/types';
 import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
+import { ExportProgressEvent, ExportResultEvent } from '@smartpacs/types';
 
 import { ExportService } from './export.service';
 

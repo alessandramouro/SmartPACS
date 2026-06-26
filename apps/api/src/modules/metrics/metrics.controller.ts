@@ -6,7 +6,7 @@ import * as client from 'prom-client';
 import { Public } from '../../common/decorators/roles.decorator';
 
 // Register default metrics
-client.collectDefaultMetrics({ prefix: 'dicomcloud_api_' });
+client.collectDefaultMetrics({ prefix: 'smartpacs_api_' });
 
 @ApiTags('metrics')
 @Controller('metrics')

@@ -1,20 +1,20 @@
 version: '3.9'
 
-# DicomCloud - Development Docker Compose
+# SmartPACS - Development Docker Compose
 # Usage: docker compose up -d
 
-name: dicomcloud
+name: smartpacs
 
 services:
   # ─── PostgreSQL ───────────────────────────────────────────────
   postgres:
     image: postgres:16-alpine
-    container_name: dicomcloud-postgres
+    container_name: smartpacs-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_DB: dicomcloud
-      POSTGRES_USER: dicomcloud
-      POSTGRES_PASSWORD: dicomcloud
+      POSTGRES_DB: smartpacs
+      POSTGRES_USER: smartpacs
+      POSTGRES_PASSWORD: smartpacs
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -22,17 +22,17 @@ services:
     ports:
       - '5432:5432'
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U dicomcloud -d dicomcloud']
+      test: ['CMD-SHELL', 'pg_isready -U smartpacs -d smartpacs']
       interval: 10s
       timeout: 5s
       retries: 5
     networks:
-      - dicomcloud-net
+      - smartpacs-net
 
   # ─── Redis ───────────────────────────────────────────────────
   redis:
     image: redis:7-alpine
-    container_name: dicomcloud-redis
+    container_name: smartpacs-redis
     restart: unless-stopped
     command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
     volumes:
@@ -45,7 +45,7 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - dicomcloud-net
+      - smartpacs-net
 
   # ─── Backend API ─────────────────────────────────────────────
   api:
@@ -53,12 +53,12 @@ services:
       context: .
       dockerfile: apps/api/Dockerfile
       target: development
-    container_name: dicomcloud-api
+    container_name: smartpacs-api
     restart: unless-stopped
     env_file: .env
     environment:
       NODE_ENV: development
-      DATABASE_URL: postgresql://dicomcloud:dicomcloud@postgres:5432/dicomcloud
+      DATABASE_URL: postgresql://smartpacs:smartpacs@postgres:5432/smartpacs
       REDIS_URL: redis://redis:6379
     ports:
       - '3001:3001'
@@ -78,7 +78,7 @@ services:
       retries: 3
       start_period: 30s
     networks:
-      - dicomcloud-net
+      - smartpacs-net
 
   # ─── Frontend Web ────────────────────────────────────────────
   web:
@@ -86,7 +86,7 @@ services:
       context: .
       dockerfile: apps/web/Dockerfile
       target: development
-    container_name: dicomcloud-web
+    container_name: smartpacs-web
     restart: unless-stopped
     environment:
       NODE_ENV: development
@@ -100,29 +100,29 @@ services:
     depends_on:
       - api
     networks:
-      - dicomcloud-net
+      - smartpacs-net
 
   # ─── Observability ────────────────────────────────────────────
 
   # postgres_exporter (scraped by Prometheus job 'postgres')
   postgres-exporter:
     image: prometheuscommunity/postgres-exporter:v0.15.0
-    container_name: dicomcloud-postgres-exporter
+    container_name: smartpacs-postgres-exporter
     restart: unless-stopped
     environment:
-      DATA_SOURCE_NAME: postgresql://dicomcloud:dicomcloud@postgres:5432/dicomcloud?sslmode=disable
+      DATA_SOURCE_NAME: postgresql://smartpacs:smartpacs@postgres:5432/smartpacs?sslmode=disable
     ports:
       - '9187:9187'
     depends_on:
       postgres:
         condition: service_healthy
     networks:
-      - dicomcloud-net
+      - smartpacs-net
 
   # redis_exporter (scraped by Prometheus job 'redis')
   redis-exporter:
     image: oliver006/redis_exporter:v1.62.0
-    container_name: dicomcloud-redis-exporter
+    container_name: smartpacs-redis-exporter
     restart: unless-stopped
     environment:
       REDIS_ADDR: redis://redis:6379
@@ -132,12 +132,12 @@ services:
       redis:
         condition: service_healthy
     networks:
-      - dicomcloud-net
+      - smartpacs-net
 
   # Prometheus
   prometheus:
     image: prom/prometheus:v2.51.2
-    container_name: dicomcloud-prometheus
+    container_name: smartpacs-prometheus
     restart: unless-stopped
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
@@ -152,16 +152,16 @@ services:
       - postgres-exporter
       - redis-exporter
     networks:
-      - dicomcloud-net
+      - smartpacs-net
 
   # Grafana
   grafana:
     image: grafana/grafana:10.2.3
-    container_name: dicomcloud-grafana
+    container_name: smartpacs-grafana
     restart: unless-stopped
     environment:
       GF_SECURITY_ADMIN_USER: admin
-      GF_SECURITY_ADMIN_PASSWORD: dicomcloud
+      GF_SECURITY_ADMIN_PASSWORD: smartpacs
       GF_INSTALL_PLUGINS: grafana-clock-panel,grafana-simple-json-datasource
     volumes:
       - grafana_data:/var/lib/grafana
@@ -172,26 +172,26 @@ services:
     depends_on:
       - prometheus
     networks:
-      - dicomcloud-net
+      - smartpacs-net
 
   # ─── Mail (dev) ──────────────────────────────────────────────
   mailhog:
     image: mailhog/mailhog:latest
-    container_name: dicomcloud-mailhog
+    container_name: smartpacs-mailhog
     restart: unless-stopped
     ports:
       - '1025:1025'  # SMTP
       - '8025:8025'  # Web UI
     networks:
-      - dicomcloud-net
+      - smartpacs-net
 
   # ─── pgAdmin (dev) ────────────────────────────────────────────
   pgadmin:
     image: dpage/pgadmin4:8.3
-    container_name: dicomcloud-pgadmin
+    container_name: smartpacs-pgadmin
     restart: unless-stopped
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@dicomcloud.com
+      PGADMIN_DEFAULT_EMAIL: admin@smartpacs.com
       PGADMIN_DEFAULT_PASSWORD: admin
       PGADMIN_DISABLE_POSTFIX: 'true'
     volumes:
@@ -201,10 +201,10 @@ services:
     depends_on:
       - postgres
     networks:
-      - dicomcloud-net
+      - smartpacs-net
 
 networks:
-  dicomcloud-net:
+  smartpacs-net:
     driver: bridge
 
 volumes:

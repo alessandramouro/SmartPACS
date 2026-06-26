@@ -10,7 +10,7 @@ const prometheusExporter = new PrometheusExporter(
 
 const sdk = new NodeSDK({
   resource: new Resource({
-    [SEMRESATTRS_SERVICE_NAME]: process.env.OTEL_SERVICE_NAME || 'dicomcloud-api',
+    [SEMRESATTRS_SERVICE_NAME]: process.env.OTEL_SERVICE_NAME || 'smartpacs-api',
     [SEMRESATTRS_SERVICE_VERSION]: process.env.npm_package_version || '1.0.0',
   }),
   metricReader: prometheusExporter,

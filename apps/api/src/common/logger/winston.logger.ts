@@ -18,7 +18,7 @@ export const logger = winston.createLogger({
     timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
     logFormat,
   ),
-  defaultMeta: { service: 'dicomcloud-api' },
+  defaultMeta: { service: 'smartpacs-api' },
   transports: [
     new winston.transports.Console({
       format: combine(

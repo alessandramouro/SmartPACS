@@ -1,5 +1,5 @@
-import { JwtPayload } from '@dicomcloud/types';
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import { JwtPayload } from '@smartpacs/types';
 import * as argon2 from 'argon2';
 
 import { parsePagination, buildPaginatedResponse } from '../../common/utils/pagination.util';

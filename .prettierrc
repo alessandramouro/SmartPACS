@@ -12,7 +12,7 @@
     "^(react|next)(.*)$",
     "^@nestjs/(.*)$",
     "<THIRD_PARTY_MODULES>",
-    "^@dicomcloud/(.*)$",
+    "^@smartpacs/(.*)$",
     "^[./]"
   ],
   "importOrderSeparation": true,

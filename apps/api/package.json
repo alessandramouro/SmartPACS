@@ -1,8 +1,8 @@
 {
-  "name": "@dicomcloud/api",
+  "name": "@smartpacs/api",
   "version": "1.0.0",
   "private": true,
-  "description": "DicomCloud Backend API - NestJS Enterprise",
+  "description": "SmartPACS Backend API - NestJS Enterprise",
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\"",

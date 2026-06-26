@@ -1,6 +1,6 @@
 'use client';
 
-import type { Permission, UserRole } from '@dicomcloud/types';
+import type { Permission, UserRole } from '@smartpacs/types';
 
 import { useAuthStore } from '@/stores/auth.store';
 

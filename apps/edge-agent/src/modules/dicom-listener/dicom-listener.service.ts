@@ -39,7 +39,7 @@ export class DicomListenerService implements OnModuleInit, OnModuleDestroy {
     private readonly database: DatabaseService,
     private readonly eventEmitter: EventEmitter2,
   ) {
-    this.aeTitle = configService.get<string>('dicom.aeTitle', 'DICOMCLOUD');
+    this.aeTitle = configService.get<string>('dicom.aeTitle', 'SMARTPACS');
     this.port = configService.get<number>('dicom.port', 104);
     this.storageDir = configService.get<string>('dicom.storageDirectory', './storage/received');
   }

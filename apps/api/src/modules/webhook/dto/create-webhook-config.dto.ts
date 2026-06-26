@@ -8,7 +8,7 @@ export class CreateWebhookConfigDto {
   @IsString()
   name: string;
 
-  @ApiProperty({ example: 'https://example.com/webhooks/dicomcloud' })
+  @ApiProperty({ example: 'https://example.com/webhooks/smartpacs' })
   @IsUrl({ require_tld: false })
   url: string;
 

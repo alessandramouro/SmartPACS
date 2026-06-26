@@ -1,9 +1,9 @@
 <#
 .SYNOPSIS
-    Build do instalador DicomCloud Edge Agent (.exe)
+    Build do instalador SmartPACS Edge Agent (.exe)
 
 .DESCRIPTION
-    Prepara todos os componentes e gera o DicomCloudEdgeAgent-Setup.exe via Inno Setup.
+    Prepara todos os componentes e gera o SmartPACSEdgeAgent-Setup.exe via Inno Setup.
     Execute uma vez antes de distribuir o instalador para as clinicas.
 
     O que este script faz:
@@ -88,7 +88,7 @@ function Expand-ToDir {
 # ─────────────────────────────────────────────────────────────────────────────
 Write-Host ""
 Write-Host "  +==========================================================+" -ForegroundColor Cyan
-Write-Host "  |  DicomCloud Edge Agent — Build do Instalador v$APP_VERSION      |" -ForegroundColor Cyan
+Write-Host "  |  SmartPACS Edge Agent — Build do Instalador v$APP_VERSION      |" -ForegroundColor Cyan
 Write-Host "  +==========================================================+" -ForegroundColor Cyan
 Write-Host ""
 
