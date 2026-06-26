@@ -108,7 +108,7 @@ services:
     labels:
       traefik.enable: 'true'
       traefik.docker.network: smartpacs-net
-      traefik.http.routers.smartpacs-api.rule: Host(`smartpacs.com.br`, `www.smartpacs.com.br`) && (PathPrefix(`/api`) || PathPrefix(`/socket.io`) || PathPrefix(`/docs`) || PathPrefix(`/health`))
+      traefik.http.routers.smartpacs-api.rule: (Host(`smartpacs.com.br`) || Host(`www.smartpacs.com.br`)) && (PathPrefix(`/api`) || PathPrefix(`/socket.io`) || PathPrefix(`/docs`) || PathPrefix(`/health`))
       traefik.http.routers.smartpacs-api.entrypoints: websecure
       traefik.http.routers.smartpacs-api.tls: 'true'
       traefik.http.routers.smartpacs-api.tls.certresolver: letsencrypt
@@ -146,7 +146,7 @@ services:
     labels:
       traefik.enable: 'true'
       traefik.docker.network: smartpacs-net
-      traefik.http.routers.smartpacs-web.rule: Host(`smartpacs.com.br`, `www.smartpacs.com.br`)
+      traefik.http.routers.smartpacs-web.rule: Host(`smartpacs.com.br`) || Host(`www.smartpacs.com.br`)
       traefik.http.routers.smartpacs-web.entrypoints: websecure
       traefik.http.routers.smartpacs-web.tls: 'true'
       traefik.http.routers.smartpacs-web.tls.certresolver: letsencrypt
@@ -155,6 +155,7 @@ services:
 
 networks:
   smartpacs-net:
+    name: smartpacs-net
     driver: bridge
 
 volumes:
