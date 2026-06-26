@@ -1,14 +1,39 @@
-version: '3.9'
+# SmartPACS (DicomCloud) - Production Docker Compose
+# Usage: docker compose -f docker-compose.prod.yml up -d --build
 
-# DicomCloud - Production Docker Compose
-# Usage: docker compose -f docker-compose.prod.yml up -d
-
-name: dicomcloud-prod
+name: smartpacs
 
 services:
+  traefik:
+    image: traefik:v3.2
+    container_name: smartpacs-traefik
+    restart: always
+    command:
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entrypoints.web.http.redirections.entrypoint.scheme=https
+      - --certificatesresolvers.letsencrypt.acme.httpchallenge=true
+      - --certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web
+      - --certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL}
+      - --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
+      - --api.dashboard=false
+      - --api.insecure=false
+      - --log.level=INFO
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - traefik_letsencrypt:/letsencrypt
+    networks:
+      - smartpacs-net
+
   postgres:
     image: postgres:16-alpine
-    container_name: dicomcloud-postgres
+    container_name: smartpacs-postgres
     restart: always
     environment:
       POSTGRES_DB: ${DB_NAME:-dicomcloud}
@@ -24,11 +49,11 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - dicomcloud-net
+      - smartpacs-net
 
   redis:
     image: redis:7-alpine
-    container_name: dicomcloud-redis
+    container_name: smartpacs-redis
     restart: always
     command: >
       redis-server
@@ -41,14 +66,14 @@ services:
     expose:
       - '6379'
     networks:
-      - dicomcloud-net
+      - smartpacs-net
 
   api:
     build:
       context: .
       dockerfile: apps/api/Dockerfile
       target: production
-    container_name: dicomcloud-api
+    container_name: smartpacs-api
     restart: always
     env_file: .env.production
     environment:
@@ -70,17 +95,16 @@ services:
       retries: 3
       start_period: 30s
     networks:
-      - dicomcloud-net
-      - traefik_proxy
+      - smartpacs-net
     labels:
       traefik.enable: 'true'
-      traefik.docker.network: traefik_proxy
-      traefik.http.routers.dicomcloud-api.rule: Host(`smartpacs.com.br`, `www.smartpacs.com.br`) && (PathPrefix(`/api`) || PathPrefix(`/socket.io`) || PathPrefix(`/docs`) || PathPrefix(`/health`))
-      traefik.http.routers.dicomcloud-api.entrypoints: websecure
-      traefik.http.routers.dicomcloud-api.tls: 'true'
-      traefik.http.routers.dicomcloud-api.tls.certresolver: letsencrypt
-      traefik.http.routers.dicomcloud-api.priority: '10'
-      traefik.http.services.dicomcloud-api.loadbalancer.server.port: '3001'
+      traefik.docker.network: smartpacs-net
+      traefik.http.routers.smartpacs-api.rule: Host(`smartpacs.com.br`, `www.smartpacs.com.br`) && (PathPrefix(`/api`) || PathPrefix(`/socket.io`) || PathPrefix(`/docs`) || PathPrefix(`/health`))
+      traefik.http.routers.smartpacs-api.entrypoints: websecure
+      traefik.http.routers.smartpacs-api.tls: 'true'
+      traefik.http.routers.smartpacs-api.tls.certresolver: letsencrypt
+      traefik.http.routers.smartpacs-api.priority: '10'
+      traefik.http.services.smartpacs-api.loadbalancer.server.port: '3001'
     deploy:
       resources:
         limits:
@@ -98,7 +122,7 @@ services:
       args:
         NEXT_PUBLIC_API_URL: ${API_URL}
         NEXT_PUBLIC_APP_URL: ${APP_URL}
-    container_name: dicomcloud-web
+    container_name: smartpacs-web
     restart: always
     environment:
       NODE_ENV: production
@@ -109,26 +133,24 @@ services:
     depends_on:
       - api
     networks:
-      - dicomcloud-net
-      - traefik_proxy
+      - smartpacs-net
     labels:
       traefik.enable: 'true'
-      traefik.docker.network: traefik_proxy
-      traefik.http.routers.dicomcloud-web.rule: Host(`smartpacs.com.br`, `www.smartpacs.com.br`)
-      traefik.http.routers.dicomcloud-web.entrypoints: websecure
-      traefik.http.routers.dicomcloud-web.tls: 'true'
-      traefik.http.routers.dicomcloud-web.tls.certresolver: letsencrypt
-      traefik.http.routers.dicomcloud-web.priority: '1'
-      traefik.http.services.dicomcloud-web.loadbalancer.server.port: '3000'
+      traefik.docker.network: smartpacs-net
+      traefik.http.routers.smartpacs-web.rule: Host(`smartpacs.com.br`, `www.smartpacs.com.br`)
+      traefik.http.routers.smartpacs-web.entrypoints: websecure
+      traefik.http.routers.smartpacs-web.tls: 'true'
+      traefik.http.routers.smartpacs-web.tls.certresolver: letsencrypt
+      traefik.http.routers.smartpacs-web.priority: '1'
+      traefik.http.services.smartpacs-web.loadbalancer.server.port: '3000'
 
 networks:
-  dicomcloud-net:
+  smartpacs-net:
     driver: bridge
-  traefik_proxy:
-    external: true
 
 volumes:
   postgres_data:
   redis_data:
   api_storage:
   api_logs:
+  traefik_letsencrypt:
