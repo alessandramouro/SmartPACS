@@ -99,7 +99,10 @@ services:
     expose:
       - '8042'
     healthcheck:
-      test: ['CMD-SHELL', 'curl -f -u smartpacs-api:$ORTHANC_API_PASSWORD http://localhost:8042/system']
+      # The orthancteam/orthanc image ships neither curl nor wget; use bash's
+      # /dev/tcp to confirm something is listening on 8042. Exec form (one
+      # arg per array item) avoids any shell-quoting ambiguity.
+      test: ['CMD', 'bash', '-c', 'echo > /dev/tcp/127.0.0.1/8042']
       interval: 30s
       timeout: 10s
       retries: 3
