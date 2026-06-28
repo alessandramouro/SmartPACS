@@ -74,6 +74,7 @@ async function bootstrap() {
       'X-Request-ID',
       'X-Tenant-ID',
       'X-Agent-API-Key',
+      'Accept', // sent by OHIF's DICOMweb client for WADO-RS multipart responses
     ],
   });
 
