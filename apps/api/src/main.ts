@@ -58,9 +58,11 @@ async function bootstrap() {
   app.useStaticAssets(uploadsDir, { prefix: '/uploads' });
 
   // ─── CORS ───────────────────────────────────────────────────
+  const viewerUrl = configService.get<string>('orthanc.viewerUrl', 'http://localhost:8043');
   app.enableCors({
     origin: [
       appUrl,
+      viewerUrl, // OHIF runs on its own origin and calls the DICOMweb proxy directly
       'http://localhost:3000',
       'http://localhost:3002', // Edge agent local
     ],
