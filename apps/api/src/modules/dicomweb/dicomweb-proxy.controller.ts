@@ -53,6 +53,33 @@ export class DicomwebProxyController {
     await this.proxy(`studies/${uid}/${rest}`, req, res);
   }
 
+  // Path-token variants: OHIF's DICOMweb client builds its own request URLs
+  // from a static qidoRoot/wadoRoot and never forwards the page URL's own
+  // query string, so the viewer token is baked into the configured root
+  // ("/dicomweb/t/<token>/...") instead of relying on a ?token= query param.
+  @Get('t/:token/studies')
+  @ApiOperation({ summary: 'QIDO-RS study-level search using a path-embedded viewer token' })
+  async qidoStudiesWithPathToken(
+    @Req() req: AuthorizedRequest,
+    @Res() res: Response,
+    @Query('StudyInstanceUID') studyInstanceUid?: string,
+  ) {
+    await this.authorizeStudy(req, studyInstanceUid);
+    await this.proxy('studies', req, res);
+  }
+
+  @Get('t/:token/studies/:uid/*')
+  @ApiOperation({ summary: 'WADO-RS resources using a path-embedded viewer token' })
+  async wadoStudyResourceWithPathToken(
+    @Req() req: AuthorizedRequest,
+    @Res() res: Response,
+    @Param('uid') uid: string,
+  ) {
+    await this.authorizeStudy(req, uid);
+    const rest = (req.params as Record<string, string>)['0'] ?? '';
+    await this.proxy(`studies/${uid}/${rest}`, req, res);
+  }
+
   private async authorizeStudy(req: AuthorizedRequest, studyInstanceUid?: string): Promise<void> {
     if (!studyInstanceUid) throw new ForbiddenException('StudyInstanceUID is required');
 

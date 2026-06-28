@@ -12,10 +12,11 @@ export interface ViewerAccess {
 /**
  * Authorizes requests to the DICOMweb proxy two ways:
  *  - a normal user JWT in the Authorization header (sets req.user), or
- *  - a short-lived, single-study viewer token in the ?token= query param
- *    (sets req.viewerAccess) -- needed because OHIF's own fetch calls to its
- *    DICOMweb data source cannot be configured to send a custom Authorization
- *    header out of the box.
+ *  - a short-lived, single-study viewer token, either as a path segment
+ *    (/dicomweb/t/:token/...) or a ?token= query param (sets
+ *    req.viewerAccess) -- needed because OHIF's DICOMweb client builds its
+ *    own request URLs from a static configured root and never forwards a
+ *    custom Authorization header or the page URL's own query string.
  */
 @Injectable()
 export class DicomwebAccessGuard implements CanActivate {
@@ -32,7 +33,7 @@ export class DicomwebAccessGuard implements CanActivate {
 
     const authHeader = request.headers.authorization;
     const bearerToken = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : undefined;
-    const viewerToken = request.query.token as string | undefined;
+    const viewerToken = (request.params as Record<string, string>)?.token || (request.query.token as string | undefined);
 
     if (bearerToken) {
       try {
