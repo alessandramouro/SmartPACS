@@ -1,15 +1,16 @@
 'use client';
 
-import type { PaginatedResponse, Study, ExportProgressEvent, ExportResultEvent } from '@smartpacs/types';
-import { useQuery } from '@tanstack/react-query';
+import type { PaginatedResponse, Study, ExportProgressEvent, ExportResultEvent, ViewerTokenResponse } from '@smartpacs/types';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   Search, Filter, Download, RefreshCw, ChevronLeft, ChevronRight, FileSpreadsheet,
-  Loader2, CheckCircle2, XCircle,
+  Loader2, CheckCircle2, XCircle, Eye,
 } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 
 import { BulkExportDialog } from '@/components/studies/bulk-export-dialog';
 import { ExportDialog } from '@/components/studies/export-dialog';
+import { toast } from '@/components/ui/use-toast';
 import { usePermission } from '@/hooks/use-permission';
 import { api } from '@/lib/api';
 import { exportToExcel } from '@/lib/export-excel';
@@ -38,6 +39,17 @@ export default function StudiesPage() {
   const jobToStudy = useRef<Record<string, string>>({});
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [bulkExportOpen, setBulkExportOpen] = useState(false);
+
+  const viewerTokenMutation = useMutation({
+    mutationFn: (studyId: string) =>
+      api.post<{ data: ViewerTokenResponse }>(`/studies/${studyId}/viewer-token`).then((r) => r.data.data),
+    onSuccess: (result) => {
+      window.open(result.viewerUrl, '_blank', 'noopener');
+    },
+    onError: () => {
+      toast({ title: 'Não foi possível abrir o visualizador', variant: 'destructive' });
+    },
+  });
 
   useEffect(() => {
     const socket = getSocket();
@@ -317,6 +329,7 @@ export default function StudiesPage() {
                 <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Tamanho</th>
                 <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Status</th>
                 <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Recebido</th>
+                <th className="px-4 py-3 w-10" />
                 {can('studies:export') && <th className="px-4 py-3 w-10" />}
               </tr>
             </thead>
@@ -333,7 +346,7 @@ export default function StudiesPage() {
                 ))
               ) : studies.length === 0 ? (
                 <tr>
-                  <td colSpan={9} className="px-4 py-12 text-center text-muted-foreground text-sm">
+                  <td colSpan={10} className="px-4 py-12 text-center text-muted-foreground text-sm">
                     Nenhum estudo encontrado
                   </td>
                 </tr>
@@ -387,6 +400,24 @@ export default function StudiesPage() {
                     </td>
                     <td className="px-4 py-3 text-muted-foreground text-xs">
                       {timeAgo(study.createdAt)}
+                    </td>
+                    <td className="px-4 py-3">
+                      {study.orthancStoredAt ? (
+                        <button
+                          className="p-1.5 rounded hover:bg-muted text-muted-foreground hover:text-foreground transition-colors disabled:opacity-40"
+                          onClick={(e) => { e.stopPropagation(); viewerTokenMutation.mutate(study.id); }}
+                          disabled={viewerTokenMutation.isPending}
+                          title="Visualizar"
+                        >
+                          {viewerTokenMutation.isPending && viewerTokenMutation.variables === study.id
+                            ? <Loader2 size={14} className="animate-spin" />
+                            : <Eye size={14} />}
+                        </button>
+                      ) : (
+                        <span title="Estudo ainda não disponível para visualização">
+                          <Eye size={14} className="text-muted-foreground/30" />
+                        </span>
+                      )}
                     </td>
                     {can('studies:export') && (
                       <td className="px-4 py-3">

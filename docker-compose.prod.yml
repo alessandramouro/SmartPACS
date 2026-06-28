@@ -77,6 +77,44 @@ services:
     networks:
       - smartpacs-net
 
+  orthanc:
+    # Central DICOM archive that the API's DICOMweb proxy queries for OHIF.
+    # Not exposed via Traefik at all -- only containers on smartpacs-net (the
+    # api container) can reach it. No raw DICOM C-STORE port; studies arrive
+    # here only via DICOMweb STOW-RS pushed through the API.
+    image: orthancteam/orthanc:24.11.0
+    container_name: smartpacs-orthanc
+    restart: always
+    environment:
+      ORTHANC__NAME: SmartPACS
+      ORTHANC__DICOM_WEB__ENABLE: 'true'
+      ORTHANC__DICOM_WEB__ROOT: /dicom-web/
+      ORTHANC__AUTHENTICATION_ENABLED: 'true'
+      ORTHANC__REGISTERED_USERS: '{"smartpacs-api": "${ORTHANC_API_PASSWORD}"}'
+      ORTHANC__DICOM_AET: SMARTPACS_CLOUD
+      ORTHANC__DICOM_SERVER_ENABLED: 'false'
+      ORTHANC__CONCURRENT_JOBS: '2' # keep CPU usage bounded on the 1-vCPU host
+    volumes:
+      - orthanc_data:/var/lib/orthanc/db
+    expose:
+      - '8042'
+    healthcheck:
+      test: ['CMD-SHELL', 'curl -f -u smartpacs-api:$ORTHANC_API_PASSWORD http://localhost:8042/system']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    networks:
+      - smartpacs-net
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 768M
+        reservations:
+          cpus: '0.1'
+          memory: 128M
+
   api:
     build:
       context: .
@@ -89,14 +127,16 @@ services:
       NODE_ENV: production
     expose:
       - '3001'
-    volumes:
-      - api_storage:/app/storage
-      - api_logs:/app/logs
     depends_on:
       postgres:
         condition: service_healthy
       redis:
         condition: service_healthy
+      orthanc:
+        condition: service_started
+    volumes:
+      - api_storage:/app/storage
+      - api_logs:/app/logs
     healthcheck:
       test: ['CMD', 'curl', '-f', 'http://localhost:3001/api/v1/health']
       interval: 30s
@@ -153,6 +193,30 @@ services:
       traefik.http.routers.smartpacs-web.priority: '1'
       traefik.http.services.smartpacs-web.loadbalancer.server.port: '3000'
 
+  ohif:
+    image: ohif/app:v3.9.0
+    container_name: smartpacs-ohif
+    restart: always
+    volumes:
+      - ./infrastructure/docker/ohif/app-config.js:/usr/share/nginx/html/app-config.js:ro
+    expose:
+      - '80'
+    networks:
+      - smartpacs-net
+    labels:
+      traefik.enable: 'true'
+      traefik.docker.network: smartpacs-net
+      traefik.http.routers.smartpacs-ohif.rule: Host(`viewer.smartpacs.com.br`)
+      traefik.http.routers.smartpacs-ohif.entrypoints: websecure
+      traefik.http.routers.smartpacs-ohif.tls: 'true'
+      traefik.http.routers.smartpacs-ohif.tls.certresolver: letsencrypt
+      traefik.http.services.smartpacs-ohif.loadbalancer.server.port: '80'
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 128M
+
   landing:
     image: nginx:1.27-alpine
     container_name: smartpacs-landing
@@ -179,6 +243,7 @@ networks:
 volumes:
   postgres_data:
   redis_data:
+  orthanc_data:
   api_storage:
   api_logs:
   traefik_letsencrypt:

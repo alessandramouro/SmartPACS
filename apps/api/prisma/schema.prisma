@@ -540,6 +540,10 @@ model Study {
   exportedAt       DateTime?
   lastExportStatus ExportJobStatus?
 
+  // Central Orthanc archive linkage (for OHIF viewing)
+  orthancStudyId   String?     @db.VarChar(64)
+  orthancStoredAt  DateTime?
+
   // Relations
   tenant        Tenant        @relation(fields: [tenantId], references: [id])
   clinic        Clinic        @relation(fields: [clinicId], references: [id])

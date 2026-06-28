@@ -32,6 +32,8 @@ export interface Study {
   metadata?: Partial<DicomMetadata>;
   exportedAt?: ISODateString;
   exportDestinations?: ExportDestinationSummary[];
+  orthancStudyId?: string;
+  orthancStoredAt?: ISODateString;
   createdAt: ISODateString;
   updatedAt: ISODateString;
 }

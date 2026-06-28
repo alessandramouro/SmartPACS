@@ -1,12 +1,15 @@
 import { createHash } from 'crypto';
 
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { JwtService } from '@nestjs/jwt';
 import { StudyStatus } from '@prisma/client';
-import { JwtPayload } from '@smartpacs/types';
+import { JwtPayload, ViewerTokenResponse } from '@smartpacs/types';
 
 import { studiesIngestedTotal } from '../../common/metrics/app-metrics';
 import { parsePagination, buildPaginatedResponse, buildOrderBy } from '../../common/utils/pagination.util';
+import { assertStudyAccess } from '../../common/utils/study-access.util';
 import { PrismaService } from '../../prisma/prisma.service';
 import { AuditService } from '../audit/audit.service';
 
@@ -21,6 +24,8 @@ export class StudyService {
     private readonly prisma: PrismaService,
     private readonly auditService: AuditService,
     private readonly eventEmitter: EventEmitter2,
+    private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
   ) {}
 
   async findAll(query: StudyQueryDto, currentUser: JwtPayload) {
@@ -113,9 +118,54 @@ export class StudyService {
     });
 
     if (!study) throw new NotFoundException('Study not found');
-    this.assertStudyAccess(study, currentUser);
+    assertStudyAccess(study, currentUser);
 
     return study;
+  }
+
+  /**
+   * Mints a short-lived token scoped to exactly one study, for OHIF to use
+   * when it opens in a new tab and cannot carry the user's normal JWT.
+   */
+  async createViewerToken(id: string, currentUser: JwtPayload): Promise<ViewerTokenResponse> {
+    const study = await this.prisma.study.findFirst({
+      where: { id, tenantId: currentUser.tenantId },
+      select: { clinicId: true, studyInstanceUid: true, orthancStoredAt: true },
+    });
+    if (!study) throw new NotFoundException('Study not found');
+    assertStudyAccess(study, currentUser);
+    if (!study.orthancStoredAt) {
+      throw new NotFoundException('Study has not been archived for viewing yet');
+    }
+
+    const ttl = this.configService.get<string>('orthanc.viewerTokenTtl', '5m');
+    const token = await this.jwtService.signAsync(
+      { sub: study.studyInstanceUid, tenantId: currentUser.tenantId, type: 'viewer' },
+      {
+        secret: this.configService.get<string>('auth.jwtSecret'),
+        issuer: 'smartpacs',
+        audience: 'smartpacs-api',
+        expiresIn: ttl,
+      },
+    );
+
+    const viewerBaseUrl = this.configService.get<string>('orthanc.viewerUrl')!;
+    const expiresAt = new Date(Date.now() + this.parseTtlMs(ttl)).toISOString();
+
+    return {
+      token,
+      studyInstanceUid: study.studyInstanceUid,
+      expiresAt,
+      viewerUrl: `${viewerBaseUrl}/viewer?StudyInstanceUIDs=${study.studyInstanceUid}&token=${token}`,
+    };
+  }
+
+  private parseTtlMs(ttl: string): number {
+    const match = /^(\d+)([smhd])$/.exec(ttl);
+    if (!match) return 5 * 60 * 1000;
+    const [, value, unit] = match;
+    const multiplier = { s: 1000, m: 60000, h: 3600000, d: 86400000 }[unit]!;
+    return Number(value) * multiplier;
   }
 
   async ingest(dto: IngestStudyDto, agentId: string, tenantId: string, clinicId: string) {
@@ -226,16 +276,5 @@ export class StudyService {
       totalSizeBytes: Number(sizeAgg._sum.totalSizeBytes || 0),
       averageSizeBytes: Number(sizeAgg._avg.totalSizeBytes || 0),
     };
-  }
-
-  private assertStudyAccess(study: { clinicId: string }, currentUser: JwtPayload) {
-    if (
-      currentUser.role !== 'SUPER_ADMIN' &&
-      currentUser.role !== 'TENANT_ADMIN' &&
-      currentUser.clinicId &&
-      study.clinicId !== currentUser.clinicId
-    ) {
-      throw new ForbiddenException('Access denied to this study');
-    }
   }
 }

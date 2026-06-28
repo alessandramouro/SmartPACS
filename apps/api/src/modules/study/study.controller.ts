@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Get, Post, Param, Query, ParseUUIDPipe } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { JwtPayload } from '@smartpacs/types';
 
@@ -33,5 +33,12 @@ export class StudyController {
   @ApiOperation({ summary: 'Get full study details with files and export history' })
   findOne(@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: JwtPayload) {
     return this.studyService.findById(id, user);
+  }
+
+  @Post(':id/viewer-token')
+  @RequirePermissions('studies:read')
+  @ApiOperation({ summary: 'Mint a short-lived single-study token for the OHIF viewer' })
+  createViewerToken(@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: JwtPayload) {
+    return this.studyService.createViewerToken(id, user);
   }
 }

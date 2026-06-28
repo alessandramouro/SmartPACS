@@ -12,11 +12,13 @@ import { configValidationSchema } from './config/config.validation';
 import databaseConfig from './config/database.config';
 import emailConfig from './config/email.config';
 import oauthConfig from './config/oauth.config';
+import orthancConfig from './config/orthanc.config';
 import redisConfig from './config/redis.config';
 import storageConfig from './config/storage.config';
 import { AuditModule } from './modules/audit/audit.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { ClinicModule } from './modules/clinic/clinic.module';
+import { DicomwebModule } from './modules/dicomweb/dicomweb.module';
 import { EdgeAgentModule } from './modules/edge-agent/edge-agent.module';
 import { ExportModule } from './modules/export/export.module';
 import { HealthModule } from './modules/health/health.module';
@@ -38,7 +40,10 @@ import { PrismaModule } from './prisma/prisma.module';
     // ─── Configuration ─────────────────────────────────────────
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [appConfig, databaseConfig, authConfig, redisConfig, storageConfig, emailConfig, oauthConfig],
+      load: [
+        appConfig, databaseConfig, authConfig, redisConfig, storageConfig,
+        emailConfig, oauthConfig, orthancConfig,
+      ],
       validationSchema: configValidationSchema,
       validationOptions: {
         allowUnknown: true,
@@ -109,6 +114,7 @@ import { PrismaModule } from './prisma/prisma.module';
     ClinicModule,
     UserModule,
     StudyModule,
+    DicomwebModule,
     ExportModule,
     NotificationModule,
     EdgeAgentModule,

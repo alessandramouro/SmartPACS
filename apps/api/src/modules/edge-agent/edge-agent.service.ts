@@ -201,6 +201,17 @@ export class EdgeAgentService {
     };
   }
 
+  /** [AGENT] Records that a study has been pushed into the central Orthanc archive. */
+  async markStudyStoredInOrthanc(agentId: string, studyInstanceUid: string, orthancStudyId: string) {
+    const agent = await this.prisma.edgeAgent.findFirst({ where: { id: agentId, deletedAt: null } });
+    if (!agent) throw new NotFoundException('Agent not found');
+
+    await this.prisma.study.updateMany({
+      where: { tenantId: agent.tenantId, studyInstanceUid },
+      data: { orthancStudyId, orthancStoredAt: new Date() },
+    });
+  }
+
   async validateApiKey(agentId: string, apiKey: string) {
     const agent = await this.prisma.edgeAgent.findFirst({
       where: { id: agentId, deletedAt: null },

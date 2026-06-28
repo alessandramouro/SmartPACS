@@ -9,3 +9,4 @@ export * from './sync';
 export * from './edge-agent';
 export * from './common';
 export * from './api';
+export * from './dicomweb';

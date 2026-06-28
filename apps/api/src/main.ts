@@ -13,6 +13,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
+import express from 'express';
 import helmet from 'helmet';
 
 import { AppModule } from './app.module';
@@ -45,6 +46,10 @@ async function bootstrap() {
   app.use(compression());
   app.use(cookieParser());
   app.use(RequestIdMiddleware);
+
+  // STOW-RS bodies (multipart/related DICOM) must arrive as a raw Buffer,
+  // not parsed by the default JSON/urlencoded body parsers.
+  app.use('/api/v1/agents/:id/dicomweb/studies', express.raw({ type: () => true, limit: '512mb' }));
 
   // ─── Static Files (uploads) ──────────────────────────────────
   const storagePath = configService.get<string>('storage.localPath', './storage');
