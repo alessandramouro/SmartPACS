@@ -23,7 +23,9 @@ import { LocalStrategy } from './strategies/local.strategy';
       useFactory: (config: ConfigService) => ({
         secret: config.get<string>('auth.jwtSecret'),
         signOptions: {
-          expiresIn: config.get<string>('auth.jwtAccessExpiresIn', '15m'),
+          // @nestjs/jwt 11 types expiresIn as ms's branded StringValue, but
+          // jsonwebtoken (the actual runtime) just needs a plain string like '15m'.
+          expiresIn: config.get<string>('auth.jwtAccessExpiresIn', '15m') as never,
           issuer: 'smartpacs',
           audience: 'smartpacs-api',
         },

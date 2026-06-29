@@ -45,5 +45,14 @@
   "engines": {
     "node": ">=20.0.0",
     "npm": ">=10.0.0"
+  },
+  "overrides": {
+    "engine.io": "6.6.9",
+    "engine.io-client": "6.6.6",
+    "form-data": "4.0.6",
+    "socket.io-adapter": "2.5.8",
+    "ws": "8.21.0",
+    "joi": "17.13.4",
+    "protobufjs": "7.6.3"
   }
 }

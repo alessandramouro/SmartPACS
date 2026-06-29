@@ -145,7 +145,7 @@ export class StudyService {
         secret: this.configService.get<string>('auth.jwtSecret'),
         issuer: 'smartpacs',
         audience: 'smartpacs-api',
-        expiresIn: ttl,
+        expiresIn: ttl as never,
       },
     );
 
