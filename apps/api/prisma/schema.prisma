@@ -112,6 +112,7 @@ enum AuditAction {
   AGENT_REGISTERED
   AGENT_REVOKED
   AGENT_ENROLLED
+  STUDY_VIEWED
 }
 
 enum NotificationType {

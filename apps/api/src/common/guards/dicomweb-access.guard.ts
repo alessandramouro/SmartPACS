@@ -53,7 +53,7 @@ export class DicomwebAccessGuard implements CanActivate {
 
     if (viewerToken) {
       try {
-        const payload = await this.jwtService.verifyAsync<{ sub: string; tenantId: string; type: string }>(
+        const payload = await this.jwtService.verifyAsync<{ sub: string; tenantId: string; type: string; ip?: string }>(
           viewerToken,
           {
             secret: this.configService.get<string>('auth.jwtSecret'),
@@ -62,10 +62,14 @@ export class DicomwebAccessGuard implements CanActivate {
           },
         );
         if (payload.type === 'viewer') {
+          if (payload.ip && request.ip !== payload.ip) {
+            throw new UnauthorizedException('Viewer token IP mismatch');
+          }
           request.viewerAccess = { studyInstanceUid: payload.sub, tenantId: payload.tenantId };
           return true;
         }
-      } catch {
+      } catch (err) {
+        if (err instanceof UnauthorizedException) throw err;
         // falls through to the final rejection below
       }
     }

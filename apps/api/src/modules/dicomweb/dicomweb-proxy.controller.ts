@@ -9,6 +9,7 @@ import { Public } from '../../common/decorators/roles.decorator';
 import { DicomwebAccessGuard, ViewerAccess } from '../../common/guards/dicomweb-access.guard';
 import { findAccessibleStudyByUid } from '../../common/utils/study-access.util';
 import { PrismaService } from '../../prisma/prisma.service';
+import { AuditService } from '../audit/audit.service';
 
 import { OrthancClientService } from './orthanc-client.service';
 
@@ -28,6 +29,7 @@ export class DicomwebProxyController {
   constructor(
     private readonly orthancClient: OrthancClientService,
     private readonly prisma: PrismaService,
+    private readonly auditService: AuditService,
   ) {}
 
   @Get('studies')
@@ -87,10 +89,29 @@ export class DicomwebProxyController {
       if (req.viewerAccess.studyInstanceUid !== studyInstanceUid) {
         throw new ForbiddenException('Viewer token does not grant access to this study');
       }
+      this.auditService.log({
+        tenantId: req.viewerAccess.tenantId,
+        action: 'STUDY_VIEWED',
+        entityType: 'Study',
+        entityId: studyInstanceUid,
+        ipAddress: req.ip,
+        metadata: { via: 'viewer_token' },
+        success: true,
+      }).catch(() => null);
       return;
     }
 
     await findAccessibleStudyByUid(this.prisma, studyInstanceUid, req.user!);
+    this.auditService.log({
+      tenantId: req.user!.tenantId,
+      userId: req.user!.sub,
+      action: 'STUDY_VIEWED',
+      entityType: 'Study',
+      entityId: studyInstanceUid,
+      ipAddress: req.ip,
+      metadata: { via: 'user_jwt' },
+      success: true,
+    }).catch(() => null);
   }
 
   private async proxy(path: string, req: Request, res: Response): Promise<void> {

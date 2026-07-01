@@ -127,7 +127,7 @@ export class StudyService {
    * Mints a short-lived token scoped to exactly one study, for OHIF to use
    * when it opens in a new tab and cannot carry the user's normal JWT.
    */
-  async createViewerToken(id: string, currentUser: JwtPayload): Promise<ViewerTokenResponse> {
+  async createViewerToken(id: string, currentUser: JwtPayload, clientIp?: string): Promise<ViewerTokenResponse> {
     const study = await this.prisma.study.findFirst({
       where: { id, tenantId: currentUser.tenantId },
       select: { clinicId: true, studyInstanceUid: true, orthancStoredAt: true },
@@ -140,7 +140,7 @@ export class StudyService {
 
     const ttl = this.configService.get<string>('orthanc.viewerTokenTtl', '5m');
     const token = await this.jwtService.signAsync(
-      { sub: study.studyInstanceUid, tenantId: currentUser.tenantId, type: 'viewer' },
+      { sub: study.studyInstanceUid, tenantId: currentUser.tenantId, type: 'viewer', ...(clientIp && { ip: clientIp }) },
       {
         secret: this.configService.get<string>('auth.jwtSecret'),
         issuer: 'smartpacs',

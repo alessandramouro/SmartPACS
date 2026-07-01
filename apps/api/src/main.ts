@@ -29,6 +29,8 @@ async function bootstrap() {
     bufferLogs: true,
   });
 
+  app.set('trust proxy', 1); // real client IP from X-Forwarded-For behind Traefik
+
   const configService = app.get(ConfigService);
   const port = configService.get<number>('app.port', 3001);
   const nodeEnv = configService.get<string>('app.nodeEnv', 'development');

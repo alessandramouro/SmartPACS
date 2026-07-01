@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Param, Query, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Get, Post, Param, Query, Req, ParseUUIDPipe } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { JwtPayload } from '@smartpacs/types';
+import { Request } from 'express';
 
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { RequirePermissions } from '../../common/decorators/roles.decorator';
@@ -38,7 +39,7 @@ export class StudyController {
   @Post(':id/viewer-token')
   @RequirePermissions('studies:read')
   @ApiOperation({ summary: 'Mint a short-lived single-study token for the OHIF viewer' })
-  createViewerToken(@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: JwtPayload) {
-    return this.studyService.createViewerToken(id, user);
+  createViewerToken(@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: JwtPayload, @Req() req: Request) {
+    return this.studyService.createViewerToken(id, user, req.ip);
   }
 }
