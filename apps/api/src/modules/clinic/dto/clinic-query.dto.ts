@@ -8,6 +8,6 @@ export class ClinicQueryDto {
   @ApiPropertyOptional() @IsOptional() @IsString() sortBy?: string;
   @ApiPropertyOptional() @IsOptional() @IsEnum(['asc','desc']) sortOrder?: 'asc' | 'desc';
   @ApiPropertyOptional() @IsOptional() @IsString() q?: string;
-  @ApiPropertyOptional() @IsOptional() @IsUUID() tenantId?: string;
+  @ApiPropertyOptional() @IsOptional() @IsUUID('all') tenantId?: string;
   @ApiPropertyOptional() @IsOptional() @IsEnum(['ACTIVE','INACTIVE','SUSPENDED']) status?: string;
 }

@@ -2,7 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsString, IsOptional, IsUUID, IsBoolean, IsEnum, IsObject } from 'class-validator';
 
 export class UpsertStorageDestinationDto {
-  @ApiPropertyOptional() @IsOptional() @IsUUID() id?: string;
+  @ApiPropertyOptional() @IsOptional() @IsUUID('all') id?: string;
   @ApiProperty() @IsString() name: string;
   @ApiProperty({ enum: ['GOOGLE_DRIVE','ONEDRIVE','SMB','NFS','S3','LOCAL'] })
   @IsEnum(['GOOGLE_DRIVE','ONEDRIVE','SMB','NFS','S3','LOCAL'])

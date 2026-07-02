@@ -6,10 +6,10 @@ export class BulkExportDto {
   @IsArray()
   @ArrayMinSize(1)
   @ArrayMaxSize(200)
-  @IsUUID('4', { each: true })
+  @IsUUID('all', { each: true })
   studyIds: string[];
 
   @ApiProperty()
-  @IsUUID()
+  @IsUUID('all')
   destinationId: string;
 }

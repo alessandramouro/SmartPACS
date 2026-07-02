@@ -20,7 +20,7 @@ export class CreateWebhookConfigDto {
 
   @ApiPropertyOptional({ description: 'Restringe o webhook a uma clínica específica' })
   @IsOptional()
-  @IsUUID()
+  @IsUUID('all')
   clinicId?: string;
 
   @ApiPropertyOptional({ default: 3, minimum: 0, maximum: 10 })

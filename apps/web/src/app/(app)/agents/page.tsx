@@ -61,7 +61,7 @@ const registerSchema = z.object({
   clinicId: z.string().uuid('Selecione uma clínica'),
   name: z.string().min(2, 'Nome obrigatório').max(100),
   dicomAeTitle: z.string().min(1).max(16).default('SMARTPACS'),
-  dicomPort: z.coerce.number().int().min(1024).max(65535).default(104),
+  dicomPort: z.coerce.number().int().min(1).max(65535).default(11112),
 });
 type RegisterForm = z.infer<typeof registerSchema>;
 
@@ -84,7 +84,7 @@ function RegisterAgentModal({ open, onClose }: { open: boolean; onClose: () => v
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm<RegisterForm>({
     resolver: zodResolver(registerSchema),
-    defaultValues: { dicomAeTitle: 'SMARTPACS', dicomPort: 104 },
+    defaultValues: { dicomAeTitle: 'SMARTPACS', dicomPort: 11112 },
   });
 
   const mutation = useMutation({

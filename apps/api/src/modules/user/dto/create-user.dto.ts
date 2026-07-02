@@ -11,6 +11,6 @@ export class CreateUserDto {
   @IsEnum(['TENANT_ADMIN','CLINIC_ADMIN','OPERATOR','PHYSICIAN','READONLY'])
   role: string;
 
-  @ApiPropertyOptional() @IsOptional() @IsUUID() clinicId?: string;
+  @ApiPropertyOptional() @IsOptional() @IsUUID('all') clinicId?: string;
   @ApiPropertyOptional({ type: [String] }) @IsOptional() @IsArray() permissions?: string[];
 }

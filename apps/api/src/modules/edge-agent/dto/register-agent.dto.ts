@@ -2,7 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsString, IsUUID, IsObject, IsOptional } from 'class-validator';
 
 export class RegisterAgentDto {
-  @ApiProperty() @IsUUID() clinicId: string;
+  @ApiProperty() @IsUUID('all') clinicId: string;
   @ApiProperty() @IsString() name: string;
   @ApiProperty() @IsString() version: string;
   @ApiPropertyOptional() @IsOptional() @IsString() hostname?: string;

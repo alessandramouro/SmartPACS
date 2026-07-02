@@ -8,7 +8,7 @@ export class StudyQueryDto {
   @ApiPropertyOptional() @IsOptional() @IsString() sortBy?: string;
   @ApiPropertyOptional() @IsOptional() @IsEnum(['asc','desc']) sortOrder?: 'asc' | 'desc';
   @ApiPropertyOptional() @IsOptional() @IsString() q?: string;
-  @ApiPropertyOptional() @IsOptional() @IsUUID() clinicId?: string;
+  @ApiPropertyOptional() @IsOptional() @IsUUID('all') clinicId?: string;
   @ApiPropertyOptional() @IsOptional() @IsString() patientId?: string;
   @ApiPropertyOptional() @IsOptional() @IsString() patientName?: string;
   @ApiPropertyOptional() @IsOptional() @IsString() accessionNumber?: string;
